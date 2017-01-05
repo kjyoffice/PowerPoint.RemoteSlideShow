@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="utf-8">
+		<title> Login </title>
+		<meta name="viewport" content="width=320, user-scalable=1; target-densitydpi=medium-dpi" />
+		<link rel="stylesheet" type="text/css" href="/@@URLRootDirectoryName@@/CSS/DefaultStyleSheet.css" />
+		<style type="text/css">
+		#MainFrameArea { padding:5px; padding-top:50px; }
+		#MainFrameArea div { text-align:center; }
+		#MainFrameArea div.MainTitleBox { padding:10px; font-size:36px; font-family:'Arial Black'; }
+		#MainFrameArea div.WrongPasswordBox { margin-top:10px; color:#ff0000; font-size:24px; font-weight:bold; display:@@WrongPasswordBoxDisplay@@; }
+		#MainFrameArea div.PasswordCheckBox { margin-top:10px; }
+		#MainFrameArea div.PasswordCheckBox div { margin:5px 0px; }
+		#MainFrameArea div.PasswordCheckBox div.TitleBox { font-size:24px; }
+		#MainFrameArea div.PasswordCheckBox div.PasswordBox input { padding:5px; font-size:16px; }
+		#MainFrameArea div.PasswordCheckBox div.SubmitBox input { padding:10px; width:150px; font-size:16px; }
+		#MainFrameArea div.CopyrightBox { color:#999999; }
+		</style>
+		<script type="text/javascript" src="/@@URLRootDirectoryName@@/JAS/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript">
+		function PasswordCheckFormValueCheck() {
+			var oPasswordBox = $('#PasswordCheckForm input[name=AuthPassword]');
+			var bResult = false;
+
+			oPasswordBox.val($.trim(oPasswordBox.val()));
+
+			if(oPasswordBox.val() == '') {
+				alert('비밀번호를 입력하세요.');
+				oPasswordBox.focus();
+			} else {
+				bResult = true;
+			}
+
+			return bResult;
+		}
+		</script>
+	</head>
+	<body>
+		<div id="MainFrameArea">
+			<div class="MainTitleBox">Login</div>
+			<div class="WrongPasswordBox">비밀번호가 틀렸습니다.</div>
+			<div class="PasswordCheckBox">
+				<form id="PasswordCheckForm" method="get" action="/@@URLRootDirectoryName@@/LoginOK" onsubmit="return PasswordCheckFormValueCheck();">
+					<div class="TitleBox">비밀번호를 입력하세요.</div>
+					<div class="PasswordBox"><input type="password" name="AuthPassword" /></div>
+					<div class="SubmitBox"><input type="submit" value="로그인" /></div>
+				</form>
+			</div>
+			<div class="CopyrightBox">
+				@@AssemblyName@@<br />
+				@@AssemblyVersion@@
+			</div>
+		</div>
+	</body>
+</html>
