@@ -19,14 +19,10 @@ http://IP/SlideShow
 (** 순서는 차례대로가 아닌 방법론의 구분임)    
 - 1. 파워포인트와 이 프로그램을 관리자 권한으로 실행해야 함
 - 2. 웹 주소 정보를 시스템에 등록한다
-    (
-        * 1회성 등록
-        ** CMD를 관리자 권한으로 실행 후 다음의 명령을 실행.
-
-        형식: netsh http add urlacl url=[URL 매핑 정보] user=[Application 실행 계정]
-        등록 예: netsh http add urlacl url=http://+:80/SlideShow/ user="KimJaeYoung"           
-        삭제 예 : netsh http delete urlacl url=http://+:80/SlideShow/     
-    )
+    * 1회성 등록 - CMD를 관리자 권한으로 실행 후 다음의 명령을 실행.
+    형식: netsh http add urlacl url=[URL 매핑 정보] user=[Application 실행 계정]
+    등록 예: netsh http add urlacl url=http://+:80/SlideShow/ user="KimJaeYoung"           
+    삭제 예 : netsh http delete urlacl url=http://+:80/SlideShow/     
 - 3. UAC를 끈다 (정말 비권장!!!)   
 
 <<< 사용 >>>
