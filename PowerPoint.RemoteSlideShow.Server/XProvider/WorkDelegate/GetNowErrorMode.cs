@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Drawing;
 
 namespace PowerPoint.RemoteSlideShow.Server.XProvider.WorkDelegate
 {
-    public delegate Size dgGetSlideSize();
+    public delegate bool GetNowErrorMode();
 }

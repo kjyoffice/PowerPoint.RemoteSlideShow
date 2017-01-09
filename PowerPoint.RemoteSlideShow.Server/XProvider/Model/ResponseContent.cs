@@ -7,25 +7,25 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Model
 {
     public class ResponseContent
     {
-        public int iStatusCode { get; set; }
-        public string sStatusDescription { get; set; }
-        public string sContentType { get; set; }
-        public byte[] btBuffer { get; set; }
+        public int StatusCode { get; set; }
+        public string StatusDescription { get; set; }
+        public string ContentType { get; set; }
+        public byte[] OutputBuffer { get; set; }
 
         // ---------------------------------------
 
-        public ResponseContent(int iStatusCode, string sContentType, string sResponseText)
-            : this(iStatusCode, sContentType, Encoding.UTF8.GetBytes(sResponseText))
+        public ResponseContent(int statusCode, string contentType, string responseText)
+            : this(statusCode, contentType, Encoding.UTF8.GetBytes(responseText))
         {
             //>
         }
 
-        public ResponseContent(int iStatusCode, string sContentType, byte[] btBuffer)
+        public ResponseContent(int statusCode, string contentType, byte[] outputBuffer)
         {
-            this.iStatusCode = iStatusCode;
-            this.sStatusDescription = ((iStatusCode == Value.NetworkValue.iHTTPStatusCode_OK) ? "OK" : "Not Found");
-            this.sContentType = sContentType;
-            this.btBuffer = btBuffer;
+            this.StatusCode = statusCode;
+            this.StatusDescription = ((statusCode == Value.NetworkValue.HTTPOK) ? "OK" : "Not Found");
+            this.ContentType = contentType;
+            this.OutputBuffer = outputBuffer;
         }
     }
 }

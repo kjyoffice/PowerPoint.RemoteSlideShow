@@ -8,7 +8,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
 {
     public class AssemblyValue
     {
-        public static Version vAssemblyVersion
+        public static Version Version
         {
             get
             {
@@ -16,7 +16,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
             }
         }
 
-        public static string sAssemblyName
+        public static string Name
         {
             get
             {
@@ -24,7 +24,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
             }
         }
 
-        public static string sAssemblyInformationTitle
+        public static string Title
         {
             get
             {

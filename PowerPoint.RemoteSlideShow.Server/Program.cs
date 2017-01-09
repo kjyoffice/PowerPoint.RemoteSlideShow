@@ -14,11 +14,9 @@ namespace PowerPoint.RemoteSlideShow.Server
         [STAThread]
         static void Main()
         {
-            string sApplicationTitle = XProvider.Value.AssemblyValue.sAssemblyName;
-
-            using (Mutex mtMutex = new Mutex(false, sApplicationTitle))
+            using (Mutex appRunCheck = new Mutex(false, XProvider.Value.AssemblyValue.Name))
             {
-                if (mtMutex.WaitOne(0, false) == true)
+                if (appRunCheck.WaitOne(0, false) == true)
                 {
                     Application.EnableVisualStyles();
                     Application.SetCompatibleTextRenderingDefault(false);
@@ -26,11 +24,10 @@ namespace PowerPoint.RemoteSlideShow.Server
                 }
                 else
                 {
-                    MessageBox.Show("프로그램이 이미 실행중입니다.", sApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("프로그램이 이미 실행중입니다.", XProvider.Value.AssemblyValue.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
-                mtMutex.Close();
-                //mtMutex.Dispose();
+                appRunCheck.Close();
             }
         }
     }

@@ -5,5 +5,5 @@ using System.Text;
 
 namespace PowerPoint.RemoteSlideShow.Server.XProvider.WorkDelegate
 {
-    public delegate string dgGetDocumentName();
+    public delegate int GetTotalSlideCount();
 }

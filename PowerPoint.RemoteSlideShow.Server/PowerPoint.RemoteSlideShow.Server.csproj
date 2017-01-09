@@ -74,22 +74,22 @@
     </Compile>
     <Compile Include="XProvider\AppConfig\AppSettings.cs" />
     <Compile Include="XProvider\TypeValue\SlideShowdModeType.cs" />
-    <Compile Include="XProvider\WorkDelegate\dgGetDocumentName.cs" />
-    <Compile Include="XProvider\WorkDelegate\dgGetNowErrorMode.cs" />
-    <Compile Include="XProvider\WorkDelegate\dgGetPowerPointObject.cs" />
+    <Compile Include="XProvider\WorkDelegate\GetDocumentName.cs" />
+    <Compile Include="XProvider\WorkDelegate\GetNowErrorMode.cs" />
+    <Compile Include="XProvider\WorkDelegate\GetPowerPointObject.cs" />
     <Compile Include="XProvider\Model\ResponseContent.cs" />
     <Compile Include="XProvider\Model\SlideItem.cs" />
     <Compile Include="XProvider\Value\AssemblyValue.cs" />
     <Compile Include="XProvider\Value\MimeTypeValue.cs" />
     <Compile Include="XProvider\Value\NetworkValue.cs" />
-    <Compile Include="XProvider\WorkDelegate\dgGetSlideItem.cs" />
-    <Compile Include="XProvider\WorkDelegate\dgGetSlideSize.cs" />
-    <Compile Include="XProvider\WorkDelegate\dgGetTotalSlideCount.cs" />
-    <Compile Include="XProvider\WorkDelegate\dgGetWorkID.cs" />
-    <Compile Include="XProvider\WorkDelegate\dgSetNotifyErrorMode.cs" />
-    <Compile Include="XProvider\WorkDelegate\dgSetRestoreMainFrame.cs" />
-    <Compile Include="XProvider\WorkDelegate\dgSetSlideShowCommand.cs" />
-    <Compile Include="XProvider\WorkDelegate\dgUIThreadInvoke.cs" />
+    <Compile Include="XProvider\WorkDelegate\GetSlideItem.cs" />
+    <Compile Include="XProvider\WorkDelegate\GetSlideSize.cs" />
+    <Compile Include="XProvider\WorkDelegate\GetTotalSlideCount.cs" />
+    <Compile Include="XProvider\WorkDelegate\GetWorkID.cs" />
+    <Compile Include="XProvider\WorkDelegate\SetNotifyErrorMode.cs" />
+    <Compile Include="XProvider\WorkDelegate\SetRestoreMainFrame.cs" />
+    <Compile Include="XProvider\WorkDelegate\SetSlideShowCommand.cs" />
+    <Compile Include="XProvider\WorkDelegate\UIThreadInvoke.cs" />
     <Compile Include="XProvider\Worker\SingleServer.cs" />
     <Compile Include="XResource\FormDesign.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -168,19 +168,19 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="HTML\ReadMe.txt" />
-    <Content Include="JAS\jquery-1.9.1.min.js">
+    <Content Include="JS\jquery-1.9.1.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="JAS\jquery.cycle.all.js">
+    <Content Include="JS\jquery.cycle.all.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="JAS\jquery.cycle.all_edit.js">
+    <Content Include="JS\jquery.cycle.all_edit.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="JAS\jquery.touchwipe.js">
+    <Content Include="JS\jquery.touchwipe.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="JAS\ReadMe.txt" />
+    <Content Include="JS\ReadMe.txt" />
     <Content Include="MainFrame.ico" />
   </ItemGroup>
   <ItemGroup />

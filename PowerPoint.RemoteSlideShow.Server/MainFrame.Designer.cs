@@ -28,124 +28,92 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblOpenDocumentList = new System.Windows.Forms.Label();
-            this.lvOpenDocumentList = new System.Windows.Forms.ListView();
-            this.chOpenDocumentIndex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chOpenDocumentName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.chOpenDocumentPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.btnRefreshOpenDocumentList = new System.Windows.Forms.Button();
-            this.btnStartRemoteSlideShow = new System.Windows.Forms.Button();
-            this.msMainMenu = new System.Windows.Forms.MenuStrip();
-            this.tsmiFile = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiFile_Exit = new System.Windows.Forms.ToolStripMenuItem();
-            this.msMainMenu.SuspendLayout();
+            this.UIOpenDocumentListText = new System.Windows.Forms.Label();
+            this.UIOpenDocumentList = new System.Windows.Forms.ListView();
+            this.UIOpenDocumentIndex = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.UIOpenDocumentName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.UIOpenDocumentPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.UIRefreshOpenDocumentList = new System.Windows.Forms.Button();
+            this.UIStartRemoteSlideShow = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // lblOpenDocumentList
+            // UIOpenDocumentListText
             // 
-            this.lblOpenDocumentList.AutoSize = true;
-            this.lblOpenDocumentList.Location = new System.Drawing.Point(12, 24);
-            this.lblOpenDocumentList.Name = "lblOpenDocumentList";
-            this.lblOpenDocumentList.Size = new System.Drawing.Size(133, 12);
-            this.lblOpenDocumentList.TabIndex = 0;
-            this.lblOpenDocumentList.Text = "열려진 파워포인트 문서";
+            this.UIOpenDocumentListText.AutoSize = true;
+            this.UIOpenDocumentListText.Location = new System.Drawing.Point(10, 9);
+            this.UIOpenDocumentListText.Name = "UIOpenDocumentListText";
+            this.UIOpenDocumentListText.Size = new System.Drawing.Size(133, 12);
+            this.UIOpenDocumentListText.TabIndex = 0;
+            this.UIOpenDocumentListText.Text = "열려진 파워포인트 문서";
             // 
-            // lvOpenDocumentList
+            // UIOpenDocumentList
             // 
-            this.lvOpenDocumentList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.UIOpenDocumentList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvOpenDocumentList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.chOpenDocumentIndex,
-            this.chOpenDocumentName,
-            this.chOpenDocumentPath});
-            this.lvOpenDocumentList.FullRowSelect = true;
-            this.lvOpenDocumentList.GridLines = true;
-            this.lvOpenDocumentList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-            this.lvOpenDocumentList.Location = new System.Drawing.Point(12, 39);
-            this.lvOpenDocumentList.MultiSelect = false;
-            this.lvOpenDocumentList.Name = "lvOpenDocumentList";
-            this.lvOpenDocumentList.Size = new System.Drawing.Size(802, 163);
-            this.lvOpenDocumentList.TabIndex = 1;
-            this.lvOpenDocumentList.UseCompatibleStateImageBehavior = false;
-            this.lvOpenDocumentList.View = System.Windows.Forms.View.Details;
+            this.UIOpenDocumentList.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.UIOpenDocumentIndex,
+            this.UIOpenDocumentName,
+            this.UIOpenDocumentPath});
+            this.UIOpenDocumentList.FullRowSelect = true;
+            this.UIOpenDocumentList.GridLines = true;
+            this.UIOpenDocumentList.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.UIOpenDocumentList.Location = new System.Drawing.Point(12, 24);
+            this.UIOpenDocumentList.MultiSelect = false;
+            this.UIOpenDocumentList.Name = "UIOpenDocumentList";
+            this.UIOpenDocumentList.Size = new System.Drawing.Size(802, 178);
+            this.UIOpenDocumentList.TabIndex = 1;
+            this.UIOpenDocumentList.UseCompatibleStateImageBehavior = false;
+            this.UIOpenDocumentList.View = System.Windows.Forms.View.Details;
             // 
-            // chOpenDocumentIndex
+            // UIOpenDocumentIndex
             // 
-            this.chOpenDocumentIndex.Text = "번호";
-            this.chOpenDocumentIndex.Width = 50;
+            this.UIOpenDocumentIndex.Text = "번호";
+            this.UIOpenDocumentIndex.Width = 50;
             // 
-            // chOpenDocumentName
+            // UIOpenDocumentName
             // 
-            this.chOpenDocumentName.Text = "문서 이름";
-            this.chOpenDocumentName.Width = 250;
+            this.UIOpenDocumentName.Text = "문서 이름";
+            this.UIOpenDocumentName.Width = 250;
             // 
-            // chOpenDocumentPath
+            // UIOpenDocumentPath
             // 
-            this.chOpenDocumentPath.Text = "문서 경로";
-            this.chOpenDocumentPath.Width = 350;
+            this.UIOpenDocumentPath.Text = "문서 경로";
+            this.UIOpenDocumentPath.Width = 350;
             // 
-            // btnRefreshOpenDocumentList
+            // UIRefreshOpenDocumentList
             // 
-            this.btnRefreshOpenDocumentList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.UIRefreshOpenDocumentList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefreshOpenDocumentList.Location = new System.Drawing.Point(12, 208);
-            this.btnRefreshOpenDocumentList.Name = "btnRefreshOpenDocumentList";
-            this.btnRefreshOpenDocumentList.Size = new System.Drawing.Size(802, 46);
-            this.btnRefreshOpenDocumentList.TabIndex = 2;
-            this.btnRefreshOpenDocumentList.Text = "새로고침";
-            this.btnRefreshOpenDocumentList.UseVisualStyleBackColor = true;
-            this.btnRefreshOpenDocumentList.Click += new System.EventHandler(this.btnRefreshOpenDocumentList_Click);
+            this.UIRefreshOpenDocumentList.Location = new System.Drawing.Point(12, 208);
+            this.UIRefreshOpenDocumentList.Name = "UIRefreshOpenDocumentList";
+            this.UIRefreshOpenDocumentList.Size = new System.Drawing.Size(802, 46);
+            this.UIRefreshOpenDocumentList.TabIndex = 2;
+            this.UIRefreshOpenDocumentList.Text = "새로고침";
+            this.UIRefreshOpenDocumentList.UseVisualStyleBackColor = true;
+            this.UIRefreshOpenDocumentList.Click += new System.EventHandler(this.UIRefreshOpenDocumentList_Click);
             // 
-            // btnStartRemoteSlideShow
+            // UIStartRemoteSlideShow
             // 
-            this.btnStartRemoteSlideShow.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.UIStartRemoteSlideShow.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnStartRemoteSlideShow.Location = new System.Drawing.Point(12, 260);
-            this.btnStartRemoteSlideShow.Name = "btnStartRemoteSlideShow";
-            this.btnStartRemoteSlideShow.Size = new System.Drawing.Size(802, 78);
-            this.btnStartRemoteSlideShow.TabIndex = 3;
-            this.btnStartRemoteSlideShow.Text = "원격 슬라이드 쑈 시작";
-            this.btnStartRemoteSlideShow.UseVisualStyleBackColor = true;
-            this.btnStartRemoteSlideShow.Click += new System.EventHandler(this.btnStartRemoteSlideShow_Click);
-            // 
-            // msMainMenu
-            // 
-            this.msMainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiFile});
-            this.msMainMenu.Location = new System.Drawing.Point(0, 0);
-            this.msMainMenu.Name = "msMainMenu";
-            this.msMainMenu.Size = new System.Drawing.Size(826, 24);
-            this.msMainMenu.TabIndex = 4;
-            this.msMainMenu.Text = "menuStrip1";
-            // 
-            // tsmiFile
-            // 
-            this.tsmiFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiFile_Exit});
-            this.tsmiFile.Name = "tsmiFile";
-            this.tsmiFile.Size = new System.Drawing.Size(57, 20);
-            this.tsmiFile.Text = "파일(&F)";
-            // 
-            // tsmiFile_Exit
-            // 
-            this.tsmiFile_Exit.Name = "tsmiFile_Exit";
-            this.tsmiFile_Exit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.tsmiFile_Exit.Size = new System.Drawing.Size(168, 22);
-            this.tsmiFile_Exit.Text = "끝내기(&X)";
-            this.tsmiFile_Exit.Click += new System.EventHandler(this.tsmiFile_Exit_Click);
+            this.UIStartRemoteSlideShow.Location = new System.Drawing.Point(12, 260);
+            this.UIStartRemoteSlideShow.Name = "UIStartRemoteSlideShow";
+            this.UIStartRemoteSlideShow.Size = new System.Drawing.Size(802, 78);
+            this.UIStartRemoteSlideShow.TabIndex = 3;
+            this.UIStartRemoteSlideShow.Text = "원격 슬라이드 쑈 시작";
+            this.UIStartRemoteSlideShow.UseVisualStyleBackColor = true;
+            this.UIStartRemoteSlideShow.Click += new System.EventHandler(this.UIStartRemoteSlideShow_Click);
             // 
             // MainFrame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(826, 350);
-            this.Controls.Add(this.btnStartRemoteSlideShow);
-            this.Controls.Add(this.btnRefreshOpenDocumentList);
-            this.Controls.Add(this.lvOpenDocumentList);
-            this.Controls.Add(this.lblOpenDocumentList);
-            this.Controls.Add(this.msMainMenu);
+            this.Controls.Add(this.UIStartRemoteSlideShow);
+            this.Controls.Add(this.UIRefreshOpenDocumentList);
+            this.Controls.Add(this.UIOpenDocumentList);
+            this.Controls.Add(this.UIOpenDocumentListText);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MainMenuStrip = this.msMainMenu;
             this.MaximizeBox = false;
             this.Name = "MainFrame";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -153,8 +121,6 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFrame_FormClosing);
             this.Load += new System.EventHandler(this.MainFrame_Load);
             this.Shown += new System.EventHandler(this.MainFrame_Shown);
-            this.msMainMenu.ResumeLayout(false);
-            this.msMainMenu.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -162,16 +128,13 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblOpenDocumentList;
-        private System.Windows.Forms.ListView lvOpenDocumentList;
-        private System.Windows.Forms.ColumnHeader chOpenDocumentIndex;
-        private System.Windows.Forms.ColumnHeader chOpenDocumentName;
-        private System.Windows.Forms.ColumnHeader chOpenDocumentPath;
-        private System.Windows.Forms.Button btnRefreshOpenDocumentList;
-        private System.Windows.Forms.Button btnStartRemoteSlideShow;
-        private System.Windows.Forms.MenuStrip msMainMenu;
-        private System.Windows.Forms.ToolStripMenuItem tsmiFile;
-        private System.Windows.Forms.ToolStripMenuItem tsmiFile_Exit;
+        private System.Windows.Forms.Label UIOpenDocumentListText;
+        private System.Windows.Forms.ListView UIOpenDocumentList;
+        private System.Windows.Forms.ColumnHeader UIOpenDocumentIndex;
+        private System.Windows.Forms.ColumnHeader UIOpenDocumentName;
+        private System.Windows.Forms.ColumnHeader UIOpenDocumentPath;
+        private System.Windows.Forms.Button UIRefreshOpenDocumentList;
+        private System.Windows.Forms.Button UIStartRemoteSlideShow;
     }
 }
 

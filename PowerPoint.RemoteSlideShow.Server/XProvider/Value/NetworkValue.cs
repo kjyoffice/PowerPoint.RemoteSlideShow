@@ -10,18 +10,17 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
 {
     public class NetworkValue
     {
-        public static string sLANIPAddress
+        public static string LANIPAddress
         {
             get
             {
-                IPAddress[] ipaIP = Dns.GetHostAddresses(Dns.GetHostName()).Where(((x) => (x.AddressFamily == AddressFamily.InterNetwork))).ToArray();
-                string sResult = ((ipaIP.Length > 0) ? ipaIP[0].ToString() : String.Empty);
+                IPAddress[] ipa = Dns.GetHostAddresses(Dns.GetHostName()).Where(((x) => (x.AddressFamily == AddressFamily.InterNetwork))).ToArray();
 
-                return sResult;
+                return ((ipa.Length > 0) ? ipa[0].ToString() : String.Empty);
             }
         }
 
-        public static int iHTTPStatusCode_OK
+        public static int HTTPOK
         {
             get
             {
@@ -29,7 +28,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
             }
         }
 
-        public static int iHTTPStatusCode_NotFound
+        public static int HTTPNotFound
         {
             get
             {

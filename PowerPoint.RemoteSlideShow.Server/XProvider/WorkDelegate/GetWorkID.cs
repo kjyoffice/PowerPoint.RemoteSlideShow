@@ -5,5 +5,5 @@ using System.Text;
 
 namespace PowerPoint.RemoteSlideShow.Server.XProvider.WorkDelegate
 {
-    public delegate void dgSetNotifyErrorMode(string sErrorMessage);
+    public delegate string GetWorkID();
 }

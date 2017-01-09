@@ -5,5 +5,5 @@ using System.Text;
 
 namespace PowerPoint.RemoteSlideShow.Server.XProvider.WorkDelegate
 {
-    public delegate Model.SlideItem dgGetSlideItem(string sSlideNo);
+    public delegate string GetDocumentName();
 }

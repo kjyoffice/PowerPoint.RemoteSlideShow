@@ -5,5 +5,5 @@ using System.Text;
 
 namespace PowerPoint.RemoteSlideShow.Server.XProvider.WorkDelegate
 {
-    public delegate void dgUIThreadInvoke();
+    public delegate bool SetSlideShowCommand(string[] command);
 }

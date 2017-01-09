@@ -8,7 +8,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
 {
     public class MimeTypeValue
     {
-        public static string sPNGExtension
+        public static string PNGExtension
         {
             get
             {
@@ -16,7 +16,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
             }
         }
 
-        public static string sPNGMimeType
+        public static string PNG
         {
             get
             {
@@ -24,7 +24,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
             }
         }
 
-        public static string sHTMLMimeType
+        public static string HTML
         {
             get
             {
@@ -32,7 +32,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
             }
         }
 
-        public static string sXMLMimeType
+        public static string XML
         {
             get
             {
@@ -40,7 +40,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
             }
         }
 
-        public static string sJavaScriptMimeType
+        public static string JavaScript
         {
             get
             {
@@ -48,7 +48,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
             }
         }
 
-        public static string sStyleSheetMimeType
+        public static string StyleSheet
         {
             get
             {

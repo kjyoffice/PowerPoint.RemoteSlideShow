@@ -5,5 +5,5 @@ using System.Text;
 
 namespace PowerPoint.RemoteSlideShow.Server.XProvider.WorkDelegate
 {
-    public delegate void dgSetRestoreMainFrame();
+    public delegate void SetNotifyErrorMode(string errorMessage);
 }

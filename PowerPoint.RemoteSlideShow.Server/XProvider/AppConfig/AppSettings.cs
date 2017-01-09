@@ -10,7 +10,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.AppConfig
 {
     public class AppSettings
     {
-        public static string sSlideExportDirectoryPath
+        public static string SlideExportDirectoryPath
         {
             get
             {
@@ -21,7 +21,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.AppConfig
             }
         }
 
-        public static int iSingleServerPortNo
+        public static int SingleServerPortNo
         {
             get
             {
@@ -29,7 +29,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.AppConfig
             }
         }
 
-        public static string sSingleServerRootDirectoryName
+        public static string SingleServerRootDirectoryName
         {
             get
             {

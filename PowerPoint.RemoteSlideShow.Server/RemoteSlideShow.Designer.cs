@@ -28,64 +28,63 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblWorkStatus = new System.Windows.Forms.Label();
-            this.lblDocumentName = new System.Windows.Forms.Label();
-            this.lblConnectURL_LAN = new System.Windows.Forms.Label();
-            this.lblConnectPassword = new System.Windows.Forms.Label();
+            this.UIWorkStatus = new System.Windows.Forms.Label();
+            this.UIDocumentName = new System.Windows.Forms.Label();
+            this.UIConnectURL = new System.Windows.Forms.Label();
+            this.UIConnectPassword = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // lblWorkStatus
+            // UIWorkStatus
             // 
-            this.lblWorkStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblWorkStatus.AutoSize = true;
-            this.lblWorkStatus.Font = new System.Drawing.Font("굴림", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblWorkStatus.Location = new System.Drawing.Point(12, 165);
-            this.lblWorkStatus.Name = "lblWorkStatus";
-            this.lblWorkStatus.Size = new System.Drawing.Size(35, 32);
-            this.lblWorkStatus.TabIndex = 0;
-            this.lblWorkStatus.Text = "-";
+            this.UIWorkStatus.AutoSize = true;
+            this.UIWorkStatus.Font = new System.Drawing.Font("굴림", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.UIWorkStatus.Location = new System.Drawing.Point(12, 123);
+            this.UIWorkStatus.Name = "UIWorkStatus";
+            this.UIWorkStatus.Size = new System.Drawing.Size(35, 32);
+            this.UIWorkStatus.TabIndex = 0;
+            this.UIWorkStatus.Text = "-";
             // 
-            // lblDocumentName
+            // UIDocumentName
             // 
-            this.lblDocumentName.AutoSize = true;
-            this.lblDocumentName.Font = new System.Drawing.Font("굴림", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblDocumentName.Location = new System.Drawing.Point(12, 9);
-            this.lblDocumentName.Name = "lblDocumentName";
-            this.lblDocumentName.Size = new System.Drawing.Size(36, 32);
-            this.lblDocumentName.TabIndex = 0;
-            this.lblDocumentName.Text = "-";
+            this.UIDocumentName.AutoSize = true;
+            this.UIDocumentName.Font = new System.Drawing.Font("굴림", 24F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.UIDocumentName.Location = new System.Drawing.Point(12, 9);
+            this.UIDocumentName.Name = "UIDocumentName";
+            this.UIDocumentName.Size = new System.Drawing.Size(36, 32);
+            this.UIDocumentName.TabIndex = 0;
+            this.UIDocumentName.Text = "-";
             // 
-            // lblConnectURL_LAN
+            // UIConnectURL
             // 
-            this.lblConnectURL_LAN.AutoSize = true;
-            this.lblConnectURL_LAN.Font = new System.Drawing.Font("굴림", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblConnectURL_LAN.ForeColor = System.Drawing.Color.Blue;
-            this.lblConnectURL_LAN.Location = new System.Drawing.Point(12, 41);
-            this.lblConnectURL_LAN.Name = "lblConnectURL_LAN";
-            this.lblConnectURL_LAN.Size = new System.Drawing.Size(217, 32);
-            this.lblConnectURL_LAN.TabIndex = 0;
-            this.lblConnectURL_LAN.Text = "Please wait...";
+            this.UIConnectURL.AutoSize = true;
+            this.UIConnectURL.Font = new System.Drawing.Font("굴림", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.UIConnectURL.ForeColor = System.Drawing.Color.Blue;
+            this.UIConnectURL.Location = new System.Drawing.Point(12, 41);
+            this.UIConnectURL.Name = "UIConnectURL";
+            this.UIConnectURL.Size = new System.Drawing.Size(217, 32);
+            this.UIConnectURL.TabIndex = 0;
+            this.UIConnectURL.Text = "Please wait...";
             // 
-            // lblConnectPassword
+            // UIConnectPassword
             // 
-            this.lblConnectPassword.AutoSize = true;
-            this.lblConnectPassword.Font = new System.Drawing.Font("굴림", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.lblConnectPassword.ForeColor = System.Drawing.Color.Blue;
-            this.lblConnectPassword.Location = new System.Drawing.Point(12, 82);
-            this.lblConnectPassword.Name = "lblConnectPassword";
-            this.lblConnectPassword.Size = new System.Drawing.Size(217, 32);
-            this.lblConnectPassword.TabIndex = 0;
-            this.lblConnectPassword.Text = "Please wait...";
+            this.UIConnectPassword.AutoSize = true;
+            this.UIConnectPassword.Font = new System.Drawing.Font("굴림", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.UIConnectPassword.ForeColor = System.Drawing.Color.Blue;
+            this.UIConnectPassword.Location = new System.Drawing.Point(12, 82);
+            this.UIConnectPassword.Name = "UIConnectPassword";
+            this.UIConnectPassword.Size = new System.Drawing.Size(217, 32);
+            this.UIConnectPassword.TabIndex = 0;
+            this.UIConnectPassword.Text = "Please wait...";
             // 
             // RemoteSlideShow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1123, 206);
-            this.Controls.Add(this.lblConnectPassword);
-            this.Controls.Add(this.lblConnectURL_LAN);
-            this.Controls.Add(this.lblDocumentName);
-            this.Controls.Add(this.lblWorkStatus);
+            this.ClientSize = new System.Drawing.Size(884, 164);
+            this.Controls.Add(this.UIConnectPassword);
+            this.Controls.Add(this.UIConnectURL);
+            this.Controls.Add(this.UIDocumentName);
+            this.Controls.Add(this.UIWorkStatus);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "RemoteSlideShow";
@@ -101,10 +100,10 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblWorkStatus;
-        private System.Windows.Forms.Label lblDocumentName;
-        private System.Windows.Forms.Label lblConnectURL_LAN;
-        private System.Windows.Forms.Label lblConnectPassword;
+        private System.Windows.Forms.Label UIWorkStatus;
+        private System.Windows.Forms.Label UIDocumentName;
+        private System.Windows.Forms.Label UIConnectURL;
+        private System.Windows.Forms.Label UIConnectPassword;
 
     }
 }

@@ -7,15 +7,15 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Model
 {
     public class SlideItem
     {
-        public string sExportFilePath { get; private set; }
-        public string sMemo { get; private set; }
+        public string ExportFilePath { get; private set; }
+        public string Memo { get; private set; }
 
         // --------------------------------------
 
-        public SlideItem(string sExportFilePath, string sMemo)
+        public SlideItem(string exportFilePath, string memo)
         {
-            this.sExportFilePath = sExportFilePath;
-            this.sMemo = sMemo;
+            this.ExportFilePath = exportFilePath;
+            this.Memo = memo;
         }
     }
 }

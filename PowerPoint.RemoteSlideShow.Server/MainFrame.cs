@@ -19,28 +19,28 @@ namespace PowerPoint.RemoteSlideShow.Server
     {
         private PPT.Application GetPowerPointObject()
         {
-            PPT.Application pptApp;
+            PPT.Application ppa;
 
             try
             {
-                pptApp = (Marshal.GetActiveObject("PowerPoint.Application") as PPT.Application);
+                ppa = (Marshal.GetActiveObject("PowerPoint.Application") as PPT.Application);
 
-                if (pptApp == null)
+                if (ppa == null)
                 {
                     throw new Exception("열려진 파워포인트가 없습니다.");
                 }
-                else if ((pptApp != null) && (pptApp.Presentations.Count <= 0))
+                else if ((ppa != null) && (ppa.Presentations.Count <= 0))
                 {
                     throw new Exception("열려진 파워포인트 문서가 없습니다.");
                 }
             }
-            catch (Exception eEx)
+            catch (Exception ex)
             {
-                pptApp = null;
-                throw new Exception(("파워포인트 확인 중 오류가 발생했습니다." + Environment.NewLine + "Detail : " + eEx.Message));
+                ppa = null;
+                throw new Exception(("파워포인트 확인 중 오류가 발생했습니다." + Environment.NewLine + "Detail : " + ex.Message));
             }
 
-            return pptApp;
+            return ppa;
         }
 
         // --------------------------------------------------------------------------
@@ -58,56 +58,52 @@ namespace PowerPoint.RemoteSlideShow.Server
 
         private void MainFrame_Shown(object sender, EventArgs e)
         {
-            this.btnRefreshOpenDocumentList_Click(null, null);
+            this.UIRefreshOpenDocumentList_Click(null, null);
         }
 
-        private void btnRefreshOpenDocumentList_Click(object sender, EventArgs e)
+        private void UIRefreshOpenDocumentList_Click(object sender, EventArgs e)
         {
-            PPT.Application pptApp;
-            int i;
-            string sErrorMessage;
-
-            this.lvOpenDocumentList.Items.Clear();
+            this.UIOpenDocumentList.Items.Clear();
 
             try
             {
-                pptApp = this.GetPowerPointObject();
+                PPT.Application ppa = this.GetPowerPointObject();
 
-                for (i = 1; i <= pptApp.Presentations.Count; i++)
+                for (int i = 1; i <= ppa.Presentations.Count; i++)
                 {
-                    if ((pptApp.Presentations[i].Saved == OfficeCore.MsoTriState.msoTrue) && (pptApp.Presentations[i].Path != String.Empty) && (File.Exists(pptApp.Presentations[i].FullName) == true))
+                    if ((ppa.Presentations[i].Saved == OfficeCore.MsoTriState.msoTrue) && (ppa.Presentations[i].Path != String.Empty) && (File.Exists(ppa.Presentations[i].FullName) == true))
                     {
-                        this.lvOpenDocumentList.Items.Add(new ListViewItem(new string[] { i.ToString(), pptApp.Presentations[i].Name, pptApp.Presentations[i].FullName }));
+                        this.UIOpenDocumentList.Items.Add(new ListViewItem(new string[] { i.ToString(), ppa.Presentations[i].Name, ppa.Presentations[i].FullName }));
                     }
                 }
 
-                if (pptApp.Presentations.Count > this.lvOpenDocumentList.Items.Count)
+                if (ppa.Presentations.Count > this.UIOpenDocumentList.Items.Count)
                 {
                     MessageBox.Show("파일로 저장되지 않은 문서는 제외되었습니다.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            catch (Exception eEx)
+            catch (Exception ex)
             {
-                sErrorMessage = eEx.Message;
+                // ** ppt가 실행되지 않은 경우 예외가 발생함으로 catch문에 따로 처리 없음
+                // 사용하지 않은 변수는 오류 처리한 프로젝트 속성에 따라 오류 방지용 ㅋㅋ
+                string errorMessage = ex.Message;
                 //MessageBox.Show(("열려진 파워포인트 문서 리스트를 만들지 못했습니다." + Environment.NewLine + "Detail : " + eEx.Message), this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void btnStartRemoteSlideShow_Click(object sender, EventArgs e)
+        private void UIStartRemoteSlideShow_Click(object sender, EventArgs e)
         {
-            string[] sSelectedItem;
-
-            if (this.lvOpenDocumentList.SelectedItems.Count > 0)
+            if (this.UIOpenDocumentList.SelectedItems.Count > 0)
             {
-                sSelectedItem = this.lvOpenDocumentList.SelectedItems[0].SubItems.Cast<ListViewItem.ListViewSubItem>().Select(((x) => (x.Text))).ToArray();
+                string[] selectedItem = this.UIOpenDocumentList.SelectedItems[0].SubItems.Cast<ListViewItem.ListViewSubItem>().Select(((x) => (x.Text))).ToArray();
 
-                if (File.Exists(sSelectedItem[2]) == true)
+                if (File.Exists(selectedItem[2]) == true)
                 {
                     if (
                         MessageBox.Show(
                             (
                                 "이 문서로 원격 슬라이드 쑈를 진행하시겠습니까?" + Environment.NewLine + Environment.NewLine +
-                                sSelectedItem[1] + Environment.NewLine + Environment.NewLine +
+                                selectedItem[1] + Environment.NewLine + Environment.NewLine +
                                 "(** 진행 전 파일이 저장됩니다.)" + Environment.NewLine
                             ),
                             this.Text,
@@ -118,9 +114,9 @@ namespace PowerPoint.RemoteSlideShow.Server
                     {
                         this.Visible = false;
                         new RemoteSlideShow(
-                            new XProvider.WorkDelegate.dgGetPowerPointObject(this.GetPowerPointObject),
-                            sSelectedItem[1],
-                            sSelectedItem[2],
+                            new XProvider.WorkDelegate.GetPowerPointObject(this.GetPowerPointObject),
+                            selectedItem[1],
+                            selectedItem[2],
                             delegate()
                             {
                                 this.Visible = true;
@@ -137,11 +133,6 @@ namespace PowerPoint.RemoteSlideShow.Server
             {
                 MessageBox.Show("선택된 파워포인트 문서가 없습니다.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-        }
-
-        private void tsmiFile_Exit_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
 
         private void MainFrame_FormClosing(object sender, FormClosingEventArgs e)

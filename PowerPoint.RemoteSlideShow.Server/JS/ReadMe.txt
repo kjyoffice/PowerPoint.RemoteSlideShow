@@ -2,5 +2,5 @@
 
 XProvider.Worker.SingleServer
 
-// TODO : [MEMO] JAS 디렉토리와 관계있음!
+// TODO : [MEMO] JS 디렉토리와 관계있음!
 

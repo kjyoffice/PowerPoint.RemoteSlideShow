@@ -18,40 +18,40 @@ namespace PowerPoint.RemoteSlideShow.Server
 {
     public partial class RemoteSlideShow : Form
     {
-        private XProvider.WorkDelegate.dgGetPowerPointObject dgGetPPTAppObj { get; set; }
-        private XProvider.WorkDelegate.dgSetRestoreMainFrame dgRestoreMainFrame { get; set; }
-        private PPT.Application pptApp { get; set; }
-        private PPT.Presentation pptPresen { get; set; }
-        private PPT.Slides pptSlides { get; set; }
-        private List<XProvider.Model.SlideItem> lSlideItem { get; set; }
-        private Size szSlide { get; set; }
-        private XProvider.Worker.SingleServer ssServer { get; set; }
-        private XProvider.TypeValue.SlideShowdModeType ssmtMode { get; set; }
-        private string sDocumentName { get; set; }
-        private string sDocumentPath { get; set; }
-        private string sWorkID { get; set; }
-        private string sWorkDirectory { get; set; }
+        private XProvider.WorkDelegate.GetPowerPointObject PPTAppObject { get; set; }
+        private XProvider.WorkDelegate.SetRestoreMainFrame RestoreMainFrame { get; set; }
+        private PPT.Application PPTApp { get; set; }
+        private PPT.Presentation PPTPresentation { get; set; }
+        private PPT.Slides PPTSlides { get; set; }
+        private List<XProvider.Model.SlideItem> SlideItem { get; set; }
+        private Size SlideSize { get; set; }
+        private XProvider.Worker.SingleServer WebServer { get; set; }
+        private XProvider.TypeValue.SlideShowdModeType SlideShowMode { get; set; }
+        private string DocumentName { get; set; }
+        private string DocumentPath { get; set; }
+        private string WorkID { get; set; }
+        private string WorkDirectory { get; set; }
 
         // --------------------------------------------------------------------------
 
-        private void NotifyErrorAndClose(string sMessage, bool bSlideShowCommandTime)
+        private void NotifyErrorAndClose(string message, bool slideShowCommandTime)
         {
             if (this.InvokeRequired == true)
             {
                 this.BeginInvoke(
-                    new XProvider.WorkDelegate.dgUIThreadInvoke(
+                    new XProvider.WorkDelegate.UIThreadInvoke(
                         delegate()
                         {
                             this.Activate();
-                            this.ssmtMode = XProvider.TypeValue.SlideShowdModeType.Error;
-                            this.lblWorkStatus.Text = "오류발생!";
+                            this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.Error;
+                            this.UIWorkStatus.Text = "오류발생!";
 
-                            if (bSlideShowCommandTime == false)
+                            if (slideShowCommandTime == false)
                             {
                                 MessageBox.Show(
                                     (
                                         "아래의 오류로 인해 더 이상 진행할 수 없습니다." + Environment.NewLine + Environment.NewLine +
-                                        sMessage + Environment.NewLine + Environment.NewLine +
+                                        message + Environment.NewLine + Environment.NewLine +
                                         "원격 슬라이드 진행을 종료합니다."
                                     ),
                                     this.Text,
@@ -68,15 +68,15 @@ namespace PowerPoint.RemoteSlideShow.Server
             else
             {
                 this.Activate();
-                this.ssmtMode = XProvider.TypeValue.SlideShowdModeType.Error;
-                this.lblWorkStatus.Text = "오류발생!";
+                this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.Error;
+                this.UIWorkStatus.Text = "오류발생!";
 
-                if (bSlideShowCommandTime == false)
+                if (slideShowCommandTime == false)
                 {
                     MessageBox.Show(
                         (
                             "아래의 오류로 인해 더 이상 진행할 수 없습니다." + Environment.NewLine + Environment.NewLine +
-                            sMessage + Environment.NewLine + Environment.NewLine +
+                            message + Environment.NewLine + Environment.NewLine +
                             "원격 슬라이드 진행을 종료합니다."
                         ),
                         this.Text,
@@ -89,64 +89,59 @@ namespace PowerPoint.RemoteSlideShow.Server
             }
         }
 
-        private string CreateWorkID(string sWorkBaseDirectory)
+        private string CreateWorkID(string workBaseDirectory)
         {
-            string sResult = String.Empty;
-            string sWorkID;
-            int iTryCount = 0;
-            int iTryMaxCount = 3;
+            string result = String.Empty;
+            int tryCount = 0;
+            int tryMaxCount = 3;
 
-            while (iTryCount < iTryMaxCount)
+            while (tryCount < tryMaxCount)
             {
-                sWorkID = Guid.NewGuid().ToString().Replace("-", String.Empty).ToLower();
+                string workID = Guid.NewGuid().ToString().Replace("-", String.Empty).ToLower();
 
-                if (Directory.Exists((sWorkBaseDirectory + @"\" + sWorkID)) == false)
+                if (Directory.Exists((workBaseDirectory + @"\" + workID)) == false)
                 {
-                    sResult = sWorkID;
-                    iTryCount = (iTryMaxCount + 1);
+                    result = workID;
+                    tryCount = (tryMaxCount + 1);
                 }
                 else
                 {
-                    iTryCount++;
+                    tryCount++;
                 }
             }
 
-            return sResult;
+            return result;
         }
 
         private void SelectPowerPointDocument()
         {
-            string sErrorMessage = String.Empty;
-            string sDocumentPath_Upper = this.sDocumentPath.ToUpper();
-            int i;
-
             try
             {
-                this.pptApp = this.dgGetPPTAppObj();
+                this.PPTApp = this.PPTAppObject();
 
                 // 지정된 파워포인트 파일 선택
                 // ** 그냥 ActivePresentation를 써도 되지만.. 여러개 열려서 이것 저것 바뀔까봐~ (이 코드도 뭐 중간에 닫혀지거나 하면 바뀌겠지만 =_=)
-                for (i = 1; i <= this.pptApp.Presentations.Count; i++)
+                for (int i = 1; i <= this.PPTApp.Presentations.Count; i++)
                 {
                     // 열린파일 비교 체크
-                    if (this.pptApp.Presentations[i].FullName.ToUpper() == sDocumentPath_Upper)
+                    if (this.PPTApp.Presentations[i].FullName.ToUpper() == this.DocumentPath.ToUpper())
                     {
                         // 프레젠테이션 선택
-                        this.pptPresen = this.pptApp.Presentations[i];
+                        this.PPTPresentation = this.PPTApp.Presentations[i];
                         break;
                     }
                 }
 
                 // 열린파일 있는지 체크
-                if (this.pptPresen != null)
+                if (this.PPTPresentation != null)
                 {
                     // 프리젠테이션 슬라이드 선택
-                    this.pptSlides = this.pptPresen.Slides;
+                    this.PPTSlides = this.PPTPresentation.Slides;
 
-                    if (this.pptSlides != null)
+                    if (this.PPTSlides != null)
                     {
-                        this.ssmtMode = XProvider.TypeValue.SlideShowdModeType.PreSetting;
-                        this.lblWorkStatus.Text = "슬라이드 셋팅 진행";
+                        this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.PreSetting;
+                        this.UIWorkStatus.Text = "슬라이드 셋팅 진행";
                         this.ExecutePreSetting();
                     }
                     else
@@ -156,7 +151,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                 }
                 else
                 {
-                    throw new Exception(("아래 파일의 파워포인트를 찾을 수 없습니다." + Environment.NewLine + this.sDocumentPath));
+                    throw new Exception(("아래 파일의 파워포인트를 찾을 수 없습니다." + Environment.NewLine + this.DocumentPath));
                 }
             }
             catch (Exception eEx)
@@ -167,73 +162,70 @@ namespace PowerPoint.RemoteSlideShow.Server
 
         private void ExecutePreSetting()
         {
-            int i;
-            string sSlideExportFilePath;
-
             // 파워포인트가 최대화가 아니면 최대화로 바꿈
-            if (this.pptApp.WindowState != PPT.PpWindowState.ppWindowMaximized)
+            if (this.PPTApp.WindowState != PPT.PpWindowState.ppWindowMaximized)
             {
-                this.pptApp.WindowState = PPT.PpWindowState.ppWindowMaximized;
+                this.PPTApp.WindowState = PPT.PpWindowState.ppWindowMaximized;
             }
 
             // 파워포인트가 활성화 되어 있지 않으면 활성화
-            if (this.pptApp.Active != OfficeCore.MsoTriState.msoTrue)
+            if (this.PPTApp.Active != OfficeCore.MsoTriState.msoTrue)
             {
-                this.pptApp.Activate();
+                this.PPTApp.Activate();
             }
 
             // 파워포인트가 저장되어 있지 않으면 저장
-            if (this.pptPresen.Saved != OfficeCore.MsoTriState.msoTrue)
+            if (this.PPTPresentation.Saved != OfficeCore.MsoTriState.msoTrue)
             {
-                this.pptPresen.Save();
+                this.PPTPresentation.Save();
             }
 
-            if (this.pptSlides.Count > 0)
+            if (this.PPTSlides.Count > 0)
             {
                 // 슬라이드 크기 가져오기
-                this.szSlide = new Size((int)this.pptPresen.PageSetup.SlideWidth, (int)this.pptPresen.PageSetup.SlideHeight);
+                this.SlideSize = new Size((int)this.PPTPresentation.PageSetup.SlideWidth, (int)this.PPTPresentation.PageSetup.SlideHeight);
 
                 // 내보내기 파일 저장 디렉토리 구성 및 생성
-                if (Directory.Exists(this.sWorkDirectory) == false)
+                if (Directory.Exists(this.WorkDirectory) == false)
                 {
-                    Directory.CreateDirectory(this.sWorkDirectory);
+                    Directory.CreateDirectory(this.WorkDirectory);
                 }
 
-                this.ssmtMode = XProvider.TypeValue.SlideShowdModeType.ExportSlide;
-                this.lblWorkStatus.Text = "슬라이드 정보 내보내기";
+                this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.ExportSlide;
+                this.UIWorkStatus.Text = "슬라이드 정보 내보내기";
 
                 // 각 슬라이드 스크린샷 내보내기
-                for (i = 1; i <= this.pptSlides.Count; i++)
+                for (int i = 1; i <= this.PPTSlides.Count; i++)
                 {
                     // 슬라이드 선택!
-                    this.pptSlides[i].Select();
+                    this.PPTSlides[i].Select();
 
                     // 내보내기 파일 경로
-                    sSlideExportFilePath = (this.sWorkDirectory + @"\Slide_" + i + "." + XProvider.Value.MimeTypeValue.sPNGExtension);
+                    string slideExportFilePath = (this.WorkDirectory + @"\Slide_" + i + "." + XProvider.Value.MimeTypeValue.PNGExtension);
 
                     // 기존파일 존재여부 체크 및 삭제
-                    if (File.Exists(sSlideExportFilePath) == true)
+                    if (File.Exists(slideExportFilePath) == true)
                     {
-                        File.Delete(sSlideExportFilePath);
+                        File.Delete(slideExportFilePath);
                     }
 
                     // 슬라이드 내보내기!
-                    this.pptSlides[i].Export(sSlideExportFilePath, XProvider.Value.MimeTypeValue.sPNGExtension);
+                    this.PPTSlides[i].Export(slideExportFilePath, XProvider.Value.MimeTypeValue.PNGExtension);
 
                     // 내보내진 슬라이드 저장
-                    this.lSlideItem.Add(new XProvider.Model.SlideItem(sSlideExportFilePath, pptSlides[i].NotesPage.Shapes[2].TextFrame.TextRange.Text));
+                    this.SlideItem.Add(new XProvider.Model.SlideItem(slideExportFilePath, PPTSlides[i].NotesPage.Shapes[2].TextFrame.TextRange.Text));
                 }
 
-                this.pptSlides[1].Select();
+                this.PPTSlides[1].Select();
                 this.Activate();
 
-                this.ssServer.StartServer(this.sWorkID.Substring(0, 8));
+                this.WebServer.StartServer(this.WorkID.Substring(0, 8));
                 
-                this.lblConnectURL_LAN.Text = ("주소 : " + this.ssServer.sURL);
-                this.lblConnectPassword.Text = ("비밀번호 : " + this.ssServer.sConnectPassword);
+                this.UIConnectURL.Text = ("주소 : " + this.WebServer.ConnectURL);
+                this.UIConnectPassword.Text = ("비밀번호 : " + this.WebServer.ConnectPassword);
 
-                this.ssmtMode = XProvider.TypeValue.SlideShowdModeType.Ready;
-                this.lblWorkStatus.Text = "원격 슬라이드가 준비됨";
+                this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.Ready;
+                this.UIWorkStatus.Text = "원격 슬라이드가 준비됨";
             }
             else
             {
@@ -243,59 +235,57 @@ namespace PowerPoint.RemoteSlideShow.Server
 
         public void DeleteExportSlideAndOrderXML()
         {
-            if (this.ssServer != null)
+            if (this.WebServer != null)
             {
-                this.ssServer.StopServer();
+                this.WebServer.StopServer();
             }
 
             // 슬라이드 파일 삭제
-            foreach (XProvider.Model.SlideItem siItem in this.lSlideItem)
+            foreach (XProvider.Model.SlideItem siItem in this.SlideItem)
             {
-                if (File.Exists(siItem.sExportFilePath) == true)
+                if (File.Exists(siItem.ExportFilePath) == true)
                 {
-                    File.Delete(siItem.sExportFilePath);
+                    File.Delete(siItem.ExportFilePath);
                 }
             }
 
             // 빈 디렉토리면 삭제
-            if ((this.sWorkDirectory != String.Empty) && (Directory.Exists(this.sWorkDirectory) == true) && (Directory.GetFiles(this.sWorkDirectory, "*.*", SearchOption.AllDirectories).Length <= 0))
+            if ((this.WorkDirectory != String.Empty) && (Directory.Exists(this.WorkDirectory) == true) && (Directory.GetFiles(this.WorkDirectory, "*.*", SearchOption.AllDirectories).Length <= 0))
             {
-                Directory.Delete(this.sWorkDirectory);
+                Directory.Delete(this.WorkDirectory);
             }
         }
 
-        public bool SlideShowCommand(string[] sComment)
+        public bool SlideShowCommand(string[] comment)
         {
-            bool bResult = false;
-            string sCommandType;
-            int iMoveIndex;
+            bool result = false;
 
             try
             {
-                if ((sComment.Length == 1) || (sComment.Length == 2) && ((sComment[0] == "MOVE") && (Regex.IsMatch(sComment[1], "^[0-9]+$", RegexOptions.IgnoreCase) == true)))
+                if ((comment.Length == 1) || (comment.Length == 2) && ((comment[0] == "MOVE") && (Regex.IsMatch(comment[1], "^[0-9]+$", RegexOptions.IgnoreCase) == true)))
                 {
-                    sCommandType = sComment[0];
-                    iMoveIndex = ((sComment.Length == 2) ? Int32.Parse(sComment[1]) : 0);
-                    bResult = true;
+                    string commandType = comment[0];
+                    int moveIndex = ((comment.Length == 2) ? Int32.Parse(comment[1]) : 0);
+                    result = true;
 
-                    if (sCommandType == "RUN")
+                    if (commandType == "RUN")
                     {
                         if (this.InvokeRequired == true)
                         {
                             this.BeginInvoke(
-                                new XProvider.WorkDelegate.dgUIThreadInvoke(
+                                new XProvider.WorkDelegate.UIThreadInvoke(
                                     delegate()
                                     {
                                         try
                                         {
-                                            this.ssmtMode = XProvider.TypeValue.SlideShowdModeType.Start;
-                                            this.lblWorkStatus.Text = "원격 슬라이드 시작";
+                                            this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.Start;
+                                            this.UIWorkStatus.Text = "원격 슬라이드 시작";
                                             this.WindowState = FormWindowState.Minimized;
-                                            this.pptPresen.SlideShowSettings.Run();
+                                            this.PPTPresentation.SlideShowSettings.Run();
                                         }
                                         catch (Exception eEx)
                                         {
-                                            bResult = false;
+                                            result = false;
                                             this.NotifyErrorAndClose(eEx.Message, true);
                                         }
                                     }
@@ -304,52 +294,52 @@ namespace PowerPoint.RemoteSlideShow.Server
                         }
                         else
                         {
-                            this.ssmtMode = XProvider.TypeValue.SlideShowdModeType.Start;
-                            this.lblWorkStatus.Text = "원격 슬라이드 시작";
+                            this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.Start;
+                            this.UIWorkStatus.Text = "원격 슬라이드 시작";
                             this.WindowState = FormWindowState.Minimized;
-                            this.pptPresen.SlideShowSettings.Run();
+                            this.PPTPresentation.SlideShowSettings.Run();
                         }
                     }
-                    else if (sCommandType == "FIRST")
+                    else if (commandType == "FIRST")
                     {
-                        this.pptApp.SlideShowWindows[1].View.First();
+                        this.PPTApp.SlideShowWindows[1].View.First();
                     }
-                    else if (sCommandType == "PREVIOUS")
+                    else if (commandType == "PREVIOUS")
                     {
-                        this.pptApp.SlideShowWindows[1].View.Previous();
+                        this.PPTApp.SlideShowWindows[1].View.Previous();
                     }
-                    else if (sCommandType == "NEXT")
+                    else if (commandType == "NEXT")
                     {
-                        this.pptApp.SlideShowWindows[1].View.Next();
+                        this.PPTApp.SlideShowWindows[1].View.Next();
                     }
-                    else if (sCommandType == "LAST")
+                    else if (commandType == "LAST")
                     {
-                        this.pptApp.SlideShowWindows[1].View.Last();
+                        this.PPTApp.SlideShowWindows[1].View.Last();
                     }
-                    else if ((sCommandType == "MOVE") && ((iMoveIndex >= 1) && (iMoveIndex <= this.lSlideItem.Count)))
+                    else if ((commandType == "MOVE") && ((moveIndex >= 1) && (moveIndex <= this.SlideItem.Count)))
                     {
-                        this.pptApp.SlideShowWindows[1].View.GotoSlide(iMoveIndex);
+                        this.PPTApp.SlideShowWindows[1].View.GotoSlide(moveIndex);
                     }
-                    else if (sCommandType == "END")
+                    else if (commandType == "END")
                     {
                         if (this.InvokeRequired == true)
                         {
                             this.BeginInvoke(
-                                new XProvider.WorkDelegate.dgUIThreadInvoke(
+                                new XProvider.WorkDelegate.UIThreadInvoke(
                                     delegate()
                                     {
                                         try
                                         {
-                                            this.ssmtMode = XProvider.TypeValue.SlideShowdModeType.End;
-                                            this.lblWorkStatus.Text = "원격 슬라이드 종료";
-                                            this.lblConnectURL_LAN.Text = "-";
-                                            this.lblConnectPassword.Text = "-";
+                                            this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.End;
+                                            this.UIWorkStatus.Text = "원격 슬라이드 종료";
+                                            this.UIConnectURL.Text = "-";
+                                            this.UIConnectPassword.Text = "-";
                                             this.WindowState = FormWindowState.Normal;
                                             this.Activate();
                                         }
                                         catch (Exception eEx)
                                         {
-                                            bResult = false;
+                                            result = false;
                                             this.NotifyErrorAndClose(eEx.Message, true);
                                         }
                                     }
@@ -358,73 +348,71 @@ namespace PowerPoint.RemoteSlideShow.Server
                         }
                         else
                         {
-                            this.ssmtMode = XProvider.TypeValue.SlideShowdModeType.End;
-                            this.lblWorkStatus.Text = "원격 슬라이드 종료";
-                            this.lblConnectURL_LAN.Text = "-";
-                            this.lblConnectPassword.Text = "-";
+                            this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.End;
+                            this.UIWorkStatus.Text = "원격 슬라이드 종료";
+                            this.UIConnectURL.Text = "-";
+                            this.UIConnectPassword.Text = "-";
                             this.WindowState = FormWindowState.Normal;
                             this.Activate();
                         }
                     }
                     else
                     {
-                        bResult = false;
+                        result = false;
                     }
                 }
             }
             catch (Exception eEx)
             {
-                bResult = false;
+                result = false;
                 this.NotifyErrorAndClose(eEx.Message, true);
             }
 
-            return bResult;
+            return result;
         }
 
         // --------------------------------------------------------------------------
 
         public RemoteSlideShow(
-            XProvider.WorkDelegate.dgGetPowerPointObject dgGetPPTAppObj, 
-            string sDocumentName, 
-            string sDocumentPath,
-            XProvider.WorkDelegate.dgSetRestoreMainFrame dgRestoreMainFrame
+            XProvider.WorkDelegate.GetPowerPointObject pptAppObject, 
+            string documentName, 
+            string documentPath,
+            XProvider.WorkDelegate.SetRestoreMainFrame restoreMainFrame
         )
         {
-            this.dgGetPPTAppObj = dgGetPPTAppObj;
-            this.sDocumentName = sDocumentName;
-            this.sDocumentPath = sDocumentPath;
-            this.dgRestoreMainFrame = dgRestoreMainFrame;
+            this.PPTAppObject = pptAppObject;
+            this.DocumentName = documentName;
+            this.DocumentPath = documentPath;
+            this.RestoreMainFrame = restoreMainFrame;
 
-            this.pptApp = null;
-            this.pptPresen = null;
-            this.pptSlides = null;
-            this.lSlideItem = new List<XProvider.Model.SlideItem>();
-            this.ssServer = new XProvider.Worker.SingleServer(
-                XProvider.AppConfig.AppSettings.iSingleServerPortNo,
-                XProvider.AppConfig.AppSettings.sSingleServerRootDirectoryName,
+            this.PPTApp = null;
+            this.PPTPresentation = null;
+            this.PPTSlides = null;
+            this.SlideItem = new List<XProvider.Model.SlideItem>();
+            this.WebServer = new XProvider.Worker.SingleServer(
+                XProvider.AppConfig.AppSettings.SingleServerPortNo,
+                XProvider.AppConfig.AppSettings.SingleServerRootDirectoryName,
                 delegate()
                 {
-                    return this.sWorkID;
+                    return this.WorkID;
                 },
                 delegate(string sSlideNo)
                 {
-                    XProvider.Model.SlideItem siResult;
-                    int iSlideNo;
-                    int iSlideIndex;
+                    XProvider.Model.SlideItem result;
 
                     if ((sSlideNo != String.Empty) && (Regex.IsMatch(sSlideNo, "^[0-9]+$", RegexOptions.IgnoreCase) == true))
                     {
-                        iSlideNo = Int32.Parse(sSlideNo);
-                        iSlideIndex = (iSlideNo - 1);
+                        int slideNo = Int32.Parse(sSlideNo);
+                        int slideIndex = (slideNo - 1);
 
-                        siResult = (
-                            ((iSlideNo >= 1) && (iSlideNo <= this.lSlideItem.Count)) ?
+                        result = (
+                            ((slideNo >= 1) && (slideNo <= this.SlideItem.Count)) ?
                             (
                                 (
-                                    (this.lSlideItem[iSlideIndex].sExportFilePath != String.Empty) &&
-                                    (File.Exists(this.lSlideItem[iSlideIndex].sExportFilePath) == true)
+                                    (this.SlideItem[slideIndex].ExportFilePath != String.Empty) &&
+                                    (File.Exists(this.SlideItem[slideIndex].ExportFilePath) == true)
                                 ) ?
-                                this.lSlideItem[iSlideIndex] :
+                                this.SlideItem[slideIndex] :
                                 null
                             ) :
                             null
@@ -432,56 +420,54 @@ namespace PowerPoint.RemoteSlideShow.Server
                     }
                     else
                     {
-                        siResult = null;
+                        result = null;
                     }
 
-                    return siResult;
+                    return result;
                 },
                 delegate()
                 {
-                    return this.sDocumentName;
+                    return this.DocumentName;
                 },
                 delegate()
                 {
-                    return this.szSlide;
+                    return this.SlideSize;
                 },
                 delegate()
                 {
-                    return this.lSlideItem.Count;
+                    return this.SlideItem.Count;
                 },
-                new XProvider.WorkDelegate.dgSetSlideShowCommand(this.SlideShowCommand),
+                new XProvider.WorkDelegate.SetSlideShowCommand(this.SlideShowCommand),
                 delegate()
                 {
-                    return (this.ssmtMode == XProvider.TypeValue.SlideShowdModeType.Error);
+                    return (this.SlideShowMode == XProvider.TypeValue.SlideShowdModeType.Error);
                 },
-                delegate(string sErrorMessage)
+                delegate(string errorMessage)
                 {
-                    this.NotifyErrorAndClose(sErrorMessage, false);
+                    this.NotifyErrorAndClose(errorMessage, false);
                 }
             );
-            this.sWorkID = String.Empty;
-            this.sWorkDirectory = String.Empty;
-            this.ssmtMode = XProvider.TypeValue.SlideShowdModeType.Initialize;
+            this.WorkID = String.Empty;
+            this.WorkDirectory = String.Empty;
+            this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.Initialize;
 
             this.InitializeComponent();
             this.Icon = XResource.FormDesign.MainFrame;
-            this.lblDocumentName.Text = sDocumentName;
-            this.lblWorkStatus.Text = "초기화";
+            this.UIDocumentName.Text = documentName;
+            this.UIWorkStatus.Text = "초기화";
         }
 
         private void RemoteSlideShow_Load(object sender, EventArgs e)
         {
-            string sWorkBaseDirectory = XProvider.AppConfig.AppSettings.sSlideExportDirectoryPath;
-
             try
             {
-                this.ssmtMode = XProvider.TypeValue.SlideShowdModeType.CreateWorkID;
-                this.lblWorkStatus.Text = "Work ID 생성";
-                this.sWorkID = this.CreateWorkID(sWorkBaseDirectory);
+                this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.CreateWorkID;
+                this.UIWorkStatus.Text = "Work ID 생성";
+                this.WorkID = this.CreateWorkID(XProvider.AppConfig.AppSettings.SlideExportDirectoryPath);
 
-                if (this.sWorkID != String.Empty)
+                if (this.WorkID != String.Empty)
                 {
-                    this.sWorkDirectory = (sWorkBaseDirectory + @"\RemoteSlideShow_" + this.sWorkID);
+                    this.WorkDirectory = (XProvider.AppConfig.AppSettings.SlideExportDirectoryPath + @"\RemoteSlideShow_" + this.WorkID);
                 }
                 else
                 {
@@ -498,8 +484,8 @@ namespace PowerPoint.RemoteSlideShow.Server
         {
             try
             {
-                this.ssmtMode = XProvider.TypeValue.SlideShowdModeType.CheckSlide;
-                this.lblWorkStatus.Text = "슬라이드 확인";
+                this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.CheckSlide;
+                this.UIWorkStatus.Text = "슬라이드 확인";
                 this.SelectPowerPointDocument();
             }
             catch (Exception eEx)
@@ -510,7 +496,7 @@ namespace PowerPoint.RemoteSlideShow.Server
 
         private void RemoteSlideShow_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (this.ssmtMode == XProvider.TypeValue.SlideShowdModeType.Start)
+            if (this.SlideShowMode == XProvider.TypeValue.SlideShowdModeType.Start)
             {
                 e.Cancel = (
                         MessageBox.Show(
@@ -525,7 +511,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                     ) == DialogResult.No
                 );
             }
-            else if (this.ssmtMode == XProvider.TypeValue.SlideShowdModeType.Ready)
+            else if (this.SlideShowMode == XProvider.TypeValue.SlideShowdModeType.Ready)
             {
                 e.Cancel = (
                         MessageBox.Show(
@@ -540,13 +526,8 @@ namespace PowerPoint.RemoteSlideShow.Server
             if (e.Cancel == false)
             {
                 this.DeleteExportSlideAndOrderXML();
-                this.dgRestoreMainFrame();
+                this.RestoreMainFrame();
             }
-        }
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
     }
 }
