@@ -6,13 +6,17 @@ VisualStudio 이용해 솔루션 파일, "PowerPoint.RemoteSlideShow.sln"을 열
 
 ## 실행
 빌드 된 "PowerPoint.RemoteSlideShow.Server.exe"(이하 프로그램) 및 PowerPoint를 관리자 권한으로 실행합니다.
+
 이후 슬라이드 쑈를 하고자 하는 PPT/PPTX 문서를 열고 프로그램의 "새로고침"버튼을 눌러 해당 문서를 선택, "파워포인트 원격 슬라이드 쑈" 버튼을 누릅니다.
 
 ## 접속
 프로그램이 실행중인 PC와 같은 네트워크에 원격 기기로 쓸 핸드폰을 등록합니다.
+
 * 보통 핸드폰의 WiFi를 활성화 합니다.
 
+
 이후 핸드폰의 웹 브라우저 앱을 열어 프로그램에서 안내된 경로로 접속합니다.
+
 로그인 페이지가 열리면 프로그램에 안내된 비밀번호를 입력하여 프로그램과 핸드폰을 연결합니다.
 
 * * *
@@ -23,30 +27,43 @@ VisualStudio 이용해 솔루션 파일, "PowerPoint.RemoteSlideShow.sln"을 열
     2. netsh http add urlacl url=http://+:80/SlideShow/ user=[Application 실행 계정] 
 
     * "Application 실행 계정"을 알기 위해서는 다음의 명령을 실행하면 됩니다.
+
         echo %username%
     
     * 만약 2번 항목에서 등록한 항목을 삭제하고자 한다면 다음 명령을 실행하면 됩니다.
+
         netsh http delete urlacl url=http://+:80/SlideShow/ 
 
-    * 여기서 지정된 "80"포트 및 "SlideShow"는 app.config(/PowerPoint.RemoteSlideShow.Server.exe.config)의 다음 설정에 따릅니다.,
+    * 여기서 지정된 "80"포트 및 "SlideShow"는 app.config(/PowerPoint.RemoteSlideShow.Server.exe.config)의 다음 설정에 따릅니다.
+
         SingleServerPortNo
+
         SingleServerRootDirectoryName
 
 2. 핸드폰에서 서버 연결이 안되는 경우 프로그램을 실행하는 PC의 방화벽에서 80포트를 열어야 합니다
     * 제어판 -> 관리도구 -> 고급 보안이 포함된 Windows 방화벽
+
       or 
+
       시작 -> 실행 -> wf.msc
 
-    * 여기서 지정된 "80"포트는 app.config(/PowerPoint.RemoteSlideShow.Server.exe.config)의 다음 설정에 따릅니다.,
+    * 여기서 지정된 "80"포트는 app.config(/PowerPoint.RemoteSlideShow.Server.exe.config)의 다음 설정에 따릅니다.
+
         SingleServerPortNo
 
 ## app.config(/PowerPoint.RemoteSlideShow.Server.exe.config)
 1. SlideExportDirectoryPath
+
     원격 기기에서 보여질 슬라이드 이미지가 저장되는 디렉토리 경로입니다.
+
     이 디렉토리 경로가 빈 값인 경우 "PowerPoint.RemoteSlideShow.Server.exe"파일이 저장된 위치에 슬라이드 이미지가 저장됩니다.
+
 2. SingleServerPortNo
+
     웹서버 포트번호 입니다.
+
 3. SingleServerRootDirectoryName
+
     웹페이지 가상 디렉토리 이름입니다.
 
 ## 확인된 PowerPoint
