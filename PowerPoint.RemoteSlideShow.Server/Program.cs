@@ -14,7 +14,9 @@ namespace PowerPoint.RemoteSlideShow.Server
         [STAThread]
         static void Main()
         {
-            using (Mutex appRunCheck = new Mutex(false, XProvider.Value.AssemblyValue.Name))
+            string assemblyName = XProvider.Value.AssemblyValue.Name;
+
+            using (Mutex appRunCheck = new Mutex(false, assemblyName))
             {
                 if (appRunCheck.WaitOne(0, false) == true)
                 {
@@ -24,7 +26,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                 }
                 else
                 {
-                    MessageBox.Show("프로그램이 이미 실행중입니다.", XProvider.Value.AssemblyValue.Name, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("프로그램이 이미 실행중입니다.", assemblyName, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
                 appRunCheck.Close();

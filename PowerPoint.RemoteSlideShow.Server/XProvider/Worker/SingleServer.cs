@@ -116,6 +116,8 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
             string requestPagePath = hlRes.Url.AbsolutePath.Substring((this.URLRootDirectoryName.Length + 1)).ToUpper();
             bool matchAuthPassword = ((hlRes.QueryString["AuthPassword"] ?? String.Empty).Trim().ToUpper() == this.ConnectPasswordUpper);
             bool mathWorkID = ((hlRes.QueryString["WorkID"] ?? String.Empty).Trim() == this.WorkID());
+            string assemblyVersion = XProvider.Value.AssemblyValue.Version.ToString();
+            string assemblyName = XProvider.Value.AssemblyValue.Name;
 
             // 로그인 폼
             if (requestPagePath == String.Empty)
@@ -129,8 +131,8 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
                     responseText.AppendLine(File.ReadAllText(processValue, Encoding.UTF8));
                     responseText.Replace("@@URLRootDirectoryName@@", this.URLRootDirectoryName);
                     responseText.Replace("@@WrongPasswordBoxDisplay@@", "none");
-                    responseText.Replace("@@AssemblyName@@", XProvider.Value.AssemblyValue.Name);
-                    responseText.Replace("@@AssemblyVersion@@", XProvider.Value.AssemblyValue.Version.ToString());
+                    responseText.Replace("@@AssemblyName@@", assemblyName);
+                    responseText.Replace("@@AssemblyVersion@@", assemblyVersion);
 
                     result = new Model.ResponseContent(
                         Value.NetworkValue.HTTPOK,
@@ -160,8 +162,8 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
                         responseText.Replace("@@MaxSlideCount@@", this.SlideCount().ToString());
                         responseText.Replace("@@SlideWidth@@", this.SlideSize().Width.ToString());
                         responseText.Replace("@@SlideHeight@@", this.SlideSize().Height.ToString());
-                        responseText.Replace("@@AssemblyName@@", XProvider.Value.AssemblyValue.Name);
-                        responseText.Replace("@@AssemblyVersion@@", XProvider.Value.AssemblyValue.Version.ToString());
+                        responseText.Replace("@@AssemblyName@@", assemblyName);
+                        responseText.Replace("@@AssemblyVersion@@", assemblyVersion);
 
                         int count1 = 1;
                         responseText.Replace(
@@ -220,8 +222,8 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
                         responseText.AppendLine(File.ReadAllText(processValue, Encoding.UTF8));
                         responseText.Replace("@@URLRootDirectoryName@@", this.URLRootDirectoryName);
                         responseText.Replace("@@WrongPasswordBoxDisplay@@", "block");
-                        responseText.Replace("@@AssemblyName@@", XProvider.Value.AssemblyValue.Name);
-                        responseText.Replace("@@AssemblyVersion@@", XProvider.Value.AssemblyValue.Version.ToString());
+                        responseText.Replace("@@AssemblyName@@", assemblyName);
+                        responseText.Replace("@@AssemblyVersion@@", assemblyVersion);
                     }
                 }
 

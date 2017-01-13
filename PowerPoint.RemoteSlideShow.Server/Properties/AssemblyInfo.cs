@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // 어셈블리의 일반 정보는 다음 특성 집합을 통해 제어됩니다.
 // 어셈블리와 관련된 정보를 수정하려면
 // 이 특성 값을 변경하십시오.
-[assembly: AssemblyTitle("PowerPoint.RemoteSlideShow.Server")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("파워포인트 원격 슬라이드 쑈")]
+[assembly: AssemblyDescription("https://github.com/kjyoffice/PowerPoint.RemoteSlideShow")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("PowerPoint.RemoteSlideShow.Server")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCopyright("Copyright © 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
