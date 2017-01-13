@@ -139,5 +139,10 @@ namespace PowerPoint.RemoteSlideShow.Server
         {
             e.Cancel = (MessageBox.Show("프로그램을 종료하시겠습니까", this.Text, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No);
         }
+
+        private void UIAboutThisApplication_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(XProvider.Value.AssemblyValue.AboutView, this.UIAboutThisApplication.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
     }
 }

@@ -31,5 +31,24 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
                 return (Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false)[0] as AssemblyTitleAttribute).Title;
             }
         }
+
+        public static string AboutView
+        {
+            get
+            {
+                Assembly asm = Assembly.GetExecutingAssembly();
+                AssemblyName an = asm.GetName();
+
+                return String.Join(
+                    Environment.NewLine,
+                    new string[] {
+                        an.Name,
+                        (asm.GetCustomAttributes(typeof(AssemblyTitleAttribute), false)[0] as AssemblyTitleAttribute).Title,
+                        (asm.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false)[0] as AssemblyFileVersionAttribute).Version + " (" + an.Version + ")",
+                        (asm.GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false)[0] as AssemblyDescriptionAttribute).Description
+                    }
+                );
+            }
+        }
     }
 }
