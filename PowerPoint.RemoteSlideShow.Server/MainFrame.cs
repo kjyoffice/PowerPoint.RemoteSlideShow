@@ -114,7 +114,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                     {
                         this.Visible = false;
                         new RemoteSlideShow(
-                            new XProvider.WorkDelegate.GetPowerPointObject(this.GetPowerPointObject),
+                            new Func<PPT.Application>(this.GetPowerPointObject),
                             selectedItem[1],
                             selectedItem[2],
                             delegate()

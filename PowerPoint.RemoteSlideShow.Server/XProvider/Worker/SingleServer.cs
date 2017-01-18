@@ -33,14 +33,14 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
 
     public class SingleServer
     {
-        private WorkDelegate.GetWorkID WorkID { get; set; }
-        private WorkDelegate.GetSlideItem SlideItem { get; set; }
-        private WorkDelegate.GetDocumentName DocumentName { get; set; }
-        private WorkDelegate.GetSlideSize SlideSize { get; set; }
-        private WorkDelegate.GetTotalSlideCount SlideCount { get; set; }
-        private WorkDelegate.SetSlideShowCommand SlideShowCommand { get; set; }
-        private WorkDelegate.GetNowErrorMode ErrorMode { get; set; }
-        private WorkDelegate.SetNotifyErrorMode NotifyError { get; set; }
+        private Func<string> WorkID { get; set; }
+        private Func<string, Model.SlideItem> SlideItem { get; set; }
+        private Func<string> DocumentName { get; set; }
+        private Func<Size> SlideSize { get; set; }
+        private Func<int> SlideCount { get; set; }
+        private Func<string[], bool> SlideShowCommand { get; set; }
+        private Func<bool> ErrorMode { get; set; }
+        private Action<string> NotifyError { get; set; }
         private HttpListener HttpWorker { get; set; }
         private int HttpPortNo { get; set; }
         private string URLRootDirectoryName { get; set; }
@@ -355,14 +355,14 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
         public SingleServer(
             int httpPortNo, 
             string urlRootDirectoryName,
-            WorkDelegate.GetWorkID workID,
-            WorkDelegate.GetSlideItem slideItem,
-            WorkDelegate.GetDocumentName documentName,
-            WorkDelegate.GetSlideSize slideSize,
-            WorkDelegate.GetTotalSlideCount slideCount,
-            WorkDelegate.SetSlideShowCommand slideShowCommand,
-            WorkDelegate.GetNowErrorMode errorMode,
-            WorkDelegate.SetNotifyErrorMode notifyError
+            Func<string> workID,
+            Func<string, Model.SlideItem> slideItem,
+            Func<string> documentName,
+            Func<Size> slideSize,
+            Func<int> slideCount,
+            Func<string[], bool> slideShowCommand,
+            Func<bool> errorMode,
+            Action<string> notifyError
         )
         {
             this.HttpPortNo = httpPortNo;

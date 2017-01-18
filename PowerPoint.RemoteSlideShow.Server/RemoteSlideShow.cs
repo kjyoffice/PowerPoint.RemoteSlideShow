@@ -18,8 +18,8 @@ namespace PowerPoint.RemoteSlideShow.Server
 {
     public partial class RemoteSlideShow : Form
     {
-        private XProvider.WorkDelegate.GetPowerPointObject PPTAppObject { get; set; }
-        private XProvider.WorkDelegate.SetRestoreMainFrame RestoreMainFrame { get; set; }
+        private Func<PPT.Application> PPTAppObject { get; set; }
+        private Action RestoreMainFrame { get; set; }
         private PPT.Application PPTApp { get; set; }
         private PPT.Presentation PPTPresentation { get; set; }
         private PPT.Slides PPTSlides { get; set; }
@@ -39,7 +39,7 @@ namespace PowerPoint.RemoteSlideShow.Server
             if (this.InvokeRequired == true)
             {
                 this.BeginInvoke(
-                    new XProvider.WorkDelegate.UIThreadInvoke(
+                    new Action(
                         delegate()
                         {
                             this.Activate();
@@ -273,7 +273,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                         if (this.InvokeRequired == true)
                         {
                             this.BeginInvoke(
-                                new XProvider.WorkDelegate.UIThreadInvoke(
+                                new Action(
                                     delegate()
                                     {
                                         try
@@ -325,7 +325,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                         if (this.InvokeRequired == true)
                         {
                             this.BeginInvoke(
-                                new XProvider.WorkDelegate.UIThreadInvoke(
+                                new Action(
                                     delegate()
                                     {
                                         try
@@ -374,10 +374,10 @@ namespace PowerPoint.RemoteSlideShow.Server
         // --------------------------------------------------------------------------
 
         public RemoteSlideShow(
-            XProvider.WorkDelegate.GetPowerPointObject pptAppObject, 
+            Func<PPT.Application> pptAppObject, 
             string documentName, 
             string documentPath,
-            XProvider.WorkDelegate.SetRestoreMainFrame restoreMainFrame
+            Action restoreMainFrame
         )
         {
             this.PPTAppObject = pptAppObject;
@@ -437,7 +437,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                 {
                     return this.SlideItem.Count;
                 },
-                new XProvider.WorkDelegate.SetSlideShowCommand(this.SlideShowCommand),
+                this.SlideShowCommand,
                 delegate()
                 {
                     return (this.SlideShowMode == XProvider.TypeValue.SlideShowdModeType.Error);

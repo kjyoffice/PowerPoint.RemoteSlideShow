@@ -74,22 +74,11 @@
     </Compile>
     <Compile Include="XProvider\AppConfig\AppSettings.cs" />
     <Compile Include="XProvider\TypeValue\SlideShowdModeType.cs" />
-    <Compile Include="XProvider\WorkDelegate\GetDocumentName.cs" />
-    <Compile Include="XProvider\WorkDelegate\GetNowErrorMode.cs" />
-    <Compile Include="XProvider\WorkDelegate\GetPowerPointObject.cs" />
     <Compile Include="XProvider\Model\ResponseContent.cs" />
     <Compile Include="XProvider\Model\SlideItem.cs" />
     <Compile Include="XProvider\Value\AssemblyValue.cs" />
     <Compile Include="XProvider\Value\MimeTypeValue.cs" />
     <Compile Include="XProvider\Value\NetworkValue.cs" />
-    <Compile Include="XProvider\WorkDelegate\GetSlideItem.cs" />
-    <Compile Include="XProvider\WorkDelegate\GetSlideSize.cs" />
-    <Compile Include="XProvider\WorkDelegate\GetTotalSlideCount.cs" />
-    <Compile Include="XProvider\WorkDelegate\GetWorkID.cs" />
-    <Compile Include="XProvider\WorkDelegate\SetNotifyErrorMode.cs" />
-    <Compile Include="XProvider\WorkDelegate\SetRestoreMainFrame.cs" />
-    <Compile Include="XProvider\WorkDelegate\SetSlideShowCommand.cs" />
-    <Compile Include="XProvider\WorkDelegate\UIThreadInvoke.cs" />
     <Compile Include="XProvider\Worker\SingleServer.cs" />
     <Compile Include="XResource\FormDesign.Designer.cs">
       <AutoGen>True</AutoGen>
