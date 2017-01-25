@@ -1,0 +1,55 @@
+﻿html, body, h1, h2, h3, h4, h5, h6, p, ul, ol, li, dl, dt, dd, table, th, td, form, fieldset, legend, input, textarea, button, select {margin:0; padding:0; -webkit-text-size-adjust:100%; vertical-align:top;}
+body, input, textarea, select, button, table {font-size:14px; font-family:NanumGothic, Malgun Gothic, dotum, sans-serif; line-height:1.2;}
+img, fieldset {border:0; vertical-align:top;}
+ul, ol, li {list-style:none;}
+em, address {font-style:normal;}
+a { text-decoration:none;}
+a:hover, a:active, a:focus {text-decoration:underline;}
+button {cursor:pointer;}
+.blind {overflow:hidden; visibility:hidden; position:absolute; top:0; left:0; width:0; height:0; font-size:0; line-height:0;}
+table {width:100%; border-collapse:collapse; border-spacing:0;}
+hr {display:none;}
+.ir span {display:block; overflow:hidden; position:relative; z-index:-1; height:11px; font-size:11px;}
+header, hgroup, footer, section, article, nav, canvas, figure, figcaption {display:block;}
+
+body { background-color:#cccccc; }
+
+.boxnone { display:none; }
+.boxblock { display:block; }
+
+#mainframearea .documentname { padding:10px; font-size:12px; font-weight:bold; text-align:center; }
+#mainframearea .appinfo { padding:5px; color:#999999; font-size:9px; text-align:center; }
+#mainframearea .mainstage { border-top:1px solid #999999; border-bottom:1px solid #999999; background-color:#ffffff; }
+
+#loginarea .loginbox { padding:50px 5px; text-align:center; }
+#loginarea .loginbox .wrongpassword { margin-bottom:10px; font-size:18px; text-align:center; color:#ff0000; }
+#loginarea .loginbox input { padding:10px; font-size:12px; text-align:center; }
+#loginarea .loginbox input[type=password] { width:80%; margin-bottom:10px; }
+#loginarea .loginbox input[type=submit] { width:50%; }
+
+#slideshowarea .gobox { overflow:hidden; clear:both;  }
+#slideshowarea .gobox .goitem { width:50%; text-align:center; background-color:#ffffee; cursor:pointer; }
+#slideshowarea .gobox .gofirst,
+#slideshowarea .gobox .goprevious { float:left; border-right:1px solid #999999; }
+#slideshowarea .gobox .golast,
+#slideshowarea .gobox .gonext { float:right; margin-right:-1px; }
+#slideshowarea .gobox .gofirst,
+#slideshowarea .gobox .golast { padding:20px 0px; }
+#slideshowarea .gobox .goprevious,
+#slideshowarea .gobox .gonext { padding:50px 0px; border-top:1px solid #999999; border-bottom:1px solid #999999; }
+
+#slideshowarea .currentslideview { padding:5px; height:560px; }
+#slideshowarea .currentslideview ul { position:relative; }
+#slideshowarea .currentslideview ul li { position:absolute; left:0px; top:0px; width:100%; height:550px; }
+#slideshowarea .currentslideview ul li img { width:100%; height:400px; margin-bottom:5px; border:1px solid #999999; }
+#slideshowarea .currentslideview ul li div { width:100%; height:150px; overflow:auto; }
+
+#slideshowarea .slidelist { width:100%; overflow-x:auto; border-top:1px solid #999999; }
+#slideshowarea .slidelist ul { list-style:none; overflow:hidden; clear:both; }
+#slideshowarea .slidelist ul li { float:left; margin:5px 0px 5px 5px; width:200px; height:150px; border:1px solid #999999; cursor:pointer; }
+#slideshowarea .slidelist ul li.off { opacity:0.5; }
+#slideshowarea .slidelist ul li.on { opacity:1; }
+#slideshowarea .slidelist ul li img { width:100%; height:100%; }
+
+#slideshowarea .endbox { width:100%; padding:10px 0px; text-align:center; border-top:1px solid #999999; background-color:#ffffee; cursor:pointer; }
+

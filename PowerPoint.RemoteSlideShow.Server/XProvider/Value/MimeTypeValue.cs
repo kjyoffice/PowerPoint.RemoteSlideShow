@@ -32,11 +32,11 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
             }
         }
 
-        public static string XML
+        public static string JSON
         {
             get
             {
-                return "text/xml";
+                return "application/json";
             }
         }
 

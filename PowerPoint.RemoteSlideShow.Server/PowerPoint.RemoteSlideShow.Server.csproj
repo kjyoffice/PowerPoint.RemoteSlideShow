@@ -146,7 +146,7 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CSS\DefaultStyleSheet.css">
+    <Content Include="CSS\DefaultStyle.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="CSS\ReadMe.txt" />
@@ -157,19 +157,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="HTML\ReadMe.txt" />
-    <Content Include="JS\jquery-1.9.1.min.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="JS\jquery.cycle.all.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="JS\jquery.cycle.all_edit.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="JS\jquery.touchwipe.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="JS\ReadMe.txt" />
     <Content Include="MainFrame.ico" />
   </ItemGroup>
   <ItemGroup />

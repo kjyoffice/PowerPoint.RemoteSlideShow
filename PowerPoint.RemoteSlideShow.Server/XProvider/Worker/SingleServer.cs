@@ -130,6 +130,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
                     StringBuilder responseText = new StringBuilder();
                     responseText.AppendLine(File.ReadAllText(processValue, Encoding.UTF8));
                     responseText.Replace("@@URLRootDirectoryName@@", this.URLRootDirectoryName);
+                    responseText.Replace("@@DocumentName@@", this.DocumentName());
                     responseText.Replace("@@WrongPasswordBoxDisplay@@", "none");
                     responseText.Replace("@@AssemblyName@@", assemblyName);
                     responseText.Replace("@@AssemblyVersion@@", assemblyVersion);
@@ -177,9 +178,9 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
                                                 (x) => (
                                                     (
                                                         @"
-                        				                <li class=""SlideItem"">
-                        					                <div class=""SlideImage""><img src=""/" + this.URLRootDirectoryName + "/GetSlide?AuthPassword=" + this.ConnectPassword + "&WorkID=" + this.WorkID() + "&No=" + count1 + @""" /></div>
-                        					                <div class=""SlideNote"">" + this.SlideItem((count1++).ToString()).Memo.Replace("\r", ("<br />" + Environment.NewLine)) + @"</div>
+                        				                <li class=""" + ((count1 <= 1) ? "boxblock" : "boxnone") + @""">
+                        					                <img src=""/" + this.URLRootDirectoryName + "/GetSlide?authpassword=" + this.ConnectPassword + "&workid=" + this.WorkID() + "&no=" + count1 + @""" />
+                        					                <div>" + this.SlideItem((count1++).ToString()).Memo.Replace("\r", ("<br />" + Environment.NewLine)) + @"</div>
                         				                </li>
                                                     "
                                                     )
@@ -201,7 +202,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
                                             (
                                                 (x) => (
                                                     (
-                                                        @"<li class=""SlideItem""><img src=""/" + this.URLRootDirectoryName + "/GetSlide?AuthPassword=" + this.ConnectPassword + "&WorkID=" + this.WorkID() + "&No=" + (count2++) + @""" /></li>"
+                                                        @"<li class=""" + ((count2 <= 1) ? "on" : "off") + @""" onclick=""SlideShowCommand('MOVE," + count2 + @"');""><img src=""/" + this.URLRootDirectoryName + "/GetSlide?authpassword=" + this.ConnectPassword + "&workid=" + this.WorkID() + "&no=" + (count2++) + @""" /></li>"
                                                     )
                                                 )
                                             )
@@ -221,6 +222,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
                     {
                         responseText.AppendLine(File.ReadAllText(processValue, Encoding.UTF8));
                         responseText.Replace("@@URLRootDirectoryName@@", this.URLRootDirectoryName);
+                        responseText.Replace("@@DocumentName@@", this.DocumentName());
                         responseText.Replace("@@WrongPasswordBoxDisplay@@", "block");
                         responseText.Replace("@@AssemblyName@@", assemblyName);
                         responseText.Replace("@@AssemblyVersion@@", assemblyVersion);
@@ -249,44 +251,9 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
                     );
                 }
             }
-            // 자바스크립트 다운로드
-            // TODO : [MEMO] JS 디렉토리와 관계있음!
-            // 수동으로 이래 단순 무식하게 한 이유는..... 보안 문제로 지정된 파일 외 다른 파일 다운로드 금지!
-            else if ((requestPagePath == "/JS/JQUERY-1.9.1.MIN.JS") || (requestPagePath == "/JS/JQUERY.CYCLE.ALL_EDIT.JS") || (requestPagePath == "/JS/JQUERY.TOUCHWIPE.JS"))
+            else if (requestPagePath == "/CSS/DEFAULTSTYLE.CSS")
             {
-                string processValue;
-
-                if (requestPagePath == "/JS/JQUERY-1.9.1.MIN.JS")
-                {
-                    processValue = (Environment.CurrentDirectory + @"\JS\jquery-1.9.1.min.js");
-                }
-                else if (requestPagePath == "/JS/JQUERY.CYCLE.ALL_EDIT.JS")
-                {
-                    processValue = (Environment.CurrentDirectory + @"\JS\jquery.cycle.all_edit.js");
-                }
-                else if (requestPagePath == "/JS/JQUERY.TOUCHWIPE.JS")
-                {
-                    processValue = (Environment.CurrentDirectory + @"\JS\jquery.touchwipe.js");
-                }
-                else
-                {
-                    processValue = String.Empty;
-                }
-
-                if ((processValue != String.Empty) && (File.Exists(processValue) == true))
-                {
-                    result = new Model.ResponseContent(
-                        Value.NetworkValue.HTTPOK,
-                        Value.MimeTypeValue.JavaScript,
-                        File.ReadAllBytes(processValue)
-                    );
-                }
-            }
-            // 스타일시트 다운로드
-            // TODO : [MEMO] CSS 디렉토리와 관계있음!
-            else if (requestPagePath == "/CSS/DEFAULTSTYLESHEET.CSS")
-            {
-                string processValue = (Environment.CurrentDirectory + @"\CSS\DefaultStyleSheet.css");
+                string processValue = (Environment.CurrentDirectory + @"\CSS\DefaultStyle.css");
 
                 if ((processValue != String.Empty) && (File.Exists(processValue) == true))
                 {
@@ -309,14 +276,11 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
                 )
                 {
                     StringBuilder responseText = new StringBuilder();
-                    responseText.AppendLine(@"<?xml version=""1.0"" encoding=""utf-8"" ?>");
-                    responseText.AppendLine("<command>");
-                    responseText.AppendLine(" <statusCode>OK</statusCode>");
-                    responseText.AppendLine("</command>");
+                    responseText.AppendLine((@"{ ""statusCode"" : ""OK"" }"));
 
                     result = new Model.ResponseContent(
                         Value.NetworkValue.HTTPOK,
-                        Value.MimeTypeValue.XML,
+                        Value.MimeTypeValue.JSON,
                         responseText.ToString()
                     );
                 }
@@ -335,7 +299,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
 	                            <head>
 		                            <meta charset=""utf-8"">
 		                            <title> 404 - Not Found </title>
-		                            <meta name=""viewport"" content=""width=320, user-scalable=1; target-densitydpi=medium-dpi"" />
+		                            <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0, target-densitydpi=medium-dpi"" />
 	                            </head>
 	                            <body>
 		                            <h1>404 - Not Found</h1>
