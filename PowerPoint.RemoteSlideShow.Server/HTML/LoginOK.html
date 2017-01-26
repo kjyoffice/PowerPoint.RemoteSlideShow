@@ -6,16 +6,7 @@
     <title> @@DocumentName@@ </title>
     <link rel="stylesheet" type="text/css" href="/@@URLRootDirectoryName@@/CSS/DefaultStyle.css" />
     <script type="text/javascript">
-        var CurrentSlideIndex = 0;
-
-        function CalcSlideListWidth() {
-            var mf = document.getElementById('mainframearea');
-            var sl = mf.getElementsByClassName('slidelist')[0];
-            var slul = sl.getElementsByTagName('ul')[0];
-            var slli = slul.getElementsByTagName('li');
-
-            slul.style.width = (((slli[0].offsetWidth + 10) * slli.length) + 'px');
-        }
+        var CurrentSlideIndex = 1;
 
         function SlideShowCommand(cmd) {
 			if((/^RUN|FIRST|PREVIOUS|NEXT|LAST|MOVE,[0-9]+|END$/gi).test(cmd) == true) {
@@ -53,10 +44,12 @@
             xhr.onreadystatechange = function() {
                 if ((xhr.readyState) == 4 && (xhr.status == 200)) {
                     var respo = JSON.parse(xhr.responseText);
+                    var beforeSlideIndex = CurrentSlideIndex;
                     
                     if(respo.statusCode == 'OK') {
 						if(cmd == 'RUN') {
 							CurrentSlideIndex = 1;
+                            ChangeSlideShowArea();
 						} else if(cmd == 'FIRST') {
 							CurrentSlideIndex = 1;
 						} else if(cmd == 'PREVIOUS') {
@@ -72,7 +65,7 @@
 						}
 
 						if(cmd != 'END') {
-                            console.log(CurrentSlideIndex);
+                            MoveSlide((beforeSlideIndex - 1), (CurrentSlideIndex - 1));
 						}
                     }
                 }
@@ -80,14 +73,37 @@
             xhr.send();
         }
 
-        window.onload = function() {
-            CalcSlideListWidth();
+        function ChangeSlideShowArea() {
+            var rssa = document.getElementById('runslideshowarea');
+            var ssa = document.getElementById('slideshowarea');
+            var slul = ssa.getElementsByClassName('slidelist')[0].getElementsByTagName('ul')[0];
+            var slli = slul.getElementsByTagName('li');
+
+            rssa.style.display = 'none';
+            ssa.style.display = 'block';
+            slul.style.width = (((slli[0].offsetWidth + 10) * slli.length) + 'px');
+        }
+
+        function MoveSlide(beforeIndex, moveIndex) {
+            var ssa = document.getElementById('slideshowarea');
+            var csvli = ssa.getElementsByClassName('currentslideview')[0].getElementsByTagName('li');
+            var sl = ssa.getElementsByClassName('slidelist')[0];
+            var slli = sl.getElementsByTagName('li');
+
+            csvli[beforeIndex].className = 'boxnone';
+            csvli[moveIndex].className = 'boxblock';
+
+            slli[beforeIndex].className = 'off';
+            slli[moveIndex].className = 'on';
+
+            sl.scrollLeft = ((slli[0].offsetWidth + 5) * moveIndex);
         }
     </script>
 </head>
 <body>
     <div id="mainframearea">
         <div class="documentname">@@DocumentName@@</div>
+        <div id="runslideshowarea" class="mainstage" onclick="SlideShowCommand('RUN');">슬라이드 쑈 시작</div>
         <div id="slideshowarea" class="mainstage">
             <div class="gobox">
                 <div class="goitem gofirst" onclick="SlideShowCommand('FIRST');">처음</div>
@@ -108,7 +124,6 @@
                 </ul>
             </div>
             <div class="endbox" onclick="SlideShowCommand('END');">슬라이드 쑈 종료</div>
-            <div class="endbox" onclick="SlideShowCommand('RUN');">RUNRUNRUNRUNRUNRUNRUNRUNRUNRUN</div>
         </div>
         <div class="appinfo">
             @@AssemblyName@@<br />
