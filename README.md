@@ -1,27 +1,44 @@
 # PowerPoint.RemoteSlideShow
 파워포인트 슬라이드 쑈를 위해 핸드폰을 원격 기기로 사용할 수 있습니다.
 
-## 빌드
+Remote control for PowerPoint slideshow 
+
+## 빌드 (Build)
 VisualStudio 이용해 솔루션 파일, "PowerPoint.RemoteSlideShow.sln"을 열어 빌드합니다.
 
-## 실행
+Open solution file "PowerPoint.RemoteSlideShow.sln" on VisualStudio and Build.
+
+## 실행 (Run)
 빌드 된 "PowerPoint.RemoteSlideShow.Server.exe"(이하 프로그램) 및 PowerPoint를 관리자 권한으로 실행합니다.
 
 이후 슬라이드 쑈를 하고자 하는 PPT/PPTX 문서를 열고 프로그램의 "새로고침"버튼을 눌러 해당 문서를 선택, "파워포인트 원격 슬라이드 쑈" 버튼을 누릅니다.
 
-## 접속
+Build file "PowerPoint.RemoteSlideShow.Server.exe"(as Program) and PowerPoint run as Administrator account.
+
+Open slideshow document(PPT/PPTX), select executing "Program".
+Press "새로고침"(Refresh) button, select document after press "파워포인트 원격 슬라이드 쑈"(PowerPoint remote slideshow) button.
+
+## 접속 (Connect)
 프로그램이 실행중인 PC와 같은 네트워크에 원격 기기로 쓸 핸드폰을 등록합니다.
 
 * 보통 핸드폰의 WiFi를 활성화 합니다.
+
+Register remote device, execut program PC.
+
+* Remote device on WiFi
 
 
 이후 핸드폰의 웹 브라우저 앱을 열어 프로그램에서 안내된 경로로 접속합니다.
 
 로그인 페이지가 열리면 프로그램에 안내된 비밀번호를 입력하여 프로그램과 핸드폰을 연결합니다.
 
+Execute Remote device web browser, try connect "Program" notify URL.
+
+Open login page, type password "Program" notify password.
+
 * * *
 
-## 안내
+## 안내 (Information)
 1. 프로그램 및 PowerPoint를 관리자 권한으로 열지 않도록 하기 위해서는 다음과 같은 설정이 필요합니다. 
     1. 시작 -> 실행 -> cmd
     2. netsh http add urlacl url=http://+:80/SlideShow/ user=[Application 실행 계정] 
@@ -40,6 +57,24 @@ VisualStudio 이용해 솔루션 파일, "PowerPoint.RemoteSlideShow.sln"을 열
 
         SingleServerRootDirectoryName
 
+1. Not use run as Administrator, try this setting.
+    1. start -> run -> cmd
+    2. netsh http add urlacl url=http://+:80/SlideShow/ user=[Application execute account] 
+
+    * If you don't know "Application execute account", try this console command.
+
+        ehco %username%
+
+    * Delete regist setting by no.2
+
+        netsh http delete urlacl url=http://+:80/SlideShow/ 
+
+    * Url port "80" and virtual directory name "SlideShow" is typed app.config(/PowerPoint.RemoteSlideShow.Server.exe.config).
+
+        SingleServerPortNo
+
+        SingleServerRootDirectoryName    
+
 2. 핸드폰에서 서버 연결이 안되는 경우 프로그램을 실행하는 PC의 방화벽에서 80포트를 열어야 합니다
     * 제어판 -> 관리도구 -> 고급 보안이 포함된 Windows 방화벽
 
@@ -51,6 +86,17 @@ VisualStudio 이용해 솔루션 파일, "PowerPoint.RemoteSlideShow.sln"을 열
 
         SingleServerPortNo
 
+2. Not connect remote control server, please check PC firewall and open 80 port.    
+    * Control Panel -> Administrative tools -> Windows Firewall with Advanced Security
+
+      or
+
+      start -> run -> wf.msc
+
+    * Url port "80" is typed app.config(/PowerPoint.RemoteSlideShow.Server.exe.config).
+
+        SingleServerPortNo     
+
 ## app.config(/PowerPoint.RemoteSlideShow.Server.exe.config)
 1. SlideExportDirectoryPath
 
@@ -58,21 +104,31 @@ VisualStudio 이용해 솔루션 파일, "PowerPoint.RemoteSlideShow.sln"을 열
 
     이 디렉토리 경로가 빈 값인 경우 "PowerPoint.RemoteSlideShow.Server.exe"파일이 저장된 위치에 슬라이드 이미지가 저장됩니다.
 
+    Save directory path for remote device show slide image.
+
+    If this option is empty value, use "PowerPoint.RemoteSlideShow.Server.exe" file save directory
+
 2. SingleServerPortNo
 
     웹서버 포트번호 입니다.
+
+    Webserver port no.
 
 3. SingleServerRootDirectoryName
 
     웹페이지 가상 디렉토리 이름입니다.
 
-## 확인된 PowerPoint
+    WebPage virtual directory name.
+
+## 확인된/의존성 PowerPoint (Check/Dependency PowerPoint)
 2007, 2010, 365
 
 * * *
 
-## 도움
+## 도움 (Help)
 이 프로그램을 공부삼아 만들었으며 다음 포스팅을 참고하였습니다.
+
+This program is for study and reference posting.
 
 ##### [C# - 오피스 파워포인트(Powerpoint) 파일을 WinForm에서 보는 방법][sysnet1]
 [http://www.sysnet.pe.kr/2/0/1728][sysnet1]
