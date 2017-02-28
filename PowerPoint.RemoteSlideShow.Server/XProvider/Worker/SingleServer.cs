@@ -109,14 +109,14 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
             return result;
         }
 
-        private Model.ResponseContent SelectResponseContent(HttpListenerRequest hlRes)
+        private Model.ResponseContent SelectResponseContent(HttpListenerRequest hlReq)
         {
             Model.ResponseContent result = null;
             //// 예 : http://127.0.0.1/MyTemp         --->    AbsolutePath : /MyTemp              ---> requestPagePath : empty
             //// 예 : http://127.0.0.1/MyTemp/xxx.asp --->    AbsolutePath : /MyTemp/xxx.asp      ---> requestPagePath : /xxx.asp
-            string requestPagePath = hlRes.Url.AbsolutePath.Substring((this.URLRootDirectoryName.Length + 1)).ToUpper();
-            bool matchAuthPassword = ((hlRes.QueryString["AuthPassword"] ?? String.Empty).Trim().ToUpper() == this.ConnectPasswordUpper);
-            bool mathWorkID = ((hlRes.QueryString["WorkID"] ?? String.Empty).Trim() == this.WorkID());
+            string requestPagePath = hlReq.Url.AbsolutePath.Substring((this.URLRootDirectoryName.Length + 1)).ToUpper();
+            bool matchAuthPassword = ((hlReq.QueryString["AuthPassword"] ?? String.Empty).Trim().ToUpper() == this.ConnectPasswordUpper);
+            bool mathWorkID = ((hlReq.QueryString["WorkID"] ?? String.Empty).Trim() == this.WorkID());
             string assemblyVersion = XProvider.Value.AssemblyValue.Version.ToString();
             string assemblyName = XProvider.Value.AssemblyValue.Name;
 
@@ -242,7 +242,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
             // 슬라이드 이미지 다운로드
             else if ((requestPagePath == "/GETSLIDE") && ((matchAuthPassword == true) && (mathWorkID == true)))
             {
-                Model.SlideItem slide = this.SlideItem((hlRes.QueryString["No"] ?? "0").Trim());
+                Model.SlideItem slide = this.SlideItem((hlReq.QueryString["No"] ?? "0").Trim());
 
                 if(slide != null) {
                     result = new Model.ResponseContent(
@@ -268,7 +268,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
             // 슬라이드 쑈 컨트롤
             else if ((requestPagePath == "/COMMAND") && ((matchAuthPassword == true) && (mathWorkID == true)))
             {
-                string processValue = (hlRes.QueryString["CommandType"] ?? String.Empty).Trim().ToUpper();
+                string processValue = (hlReq.QueryString["CommandType"] ?? String.Empty).Trim().ToUpper();
 
                 if (
                     (processValue != String.Empty) &&
