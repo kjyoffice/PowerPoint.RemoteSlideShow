@@ -76,13 +76,14 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
 
                 Model.ResponseContent rc = this.SelectResponseContent(hlc.Request);
 
-                HttpListenerResponse hlRes = hlc.Response;
-                hlRes.StatusCode = rc.StatusCode;
-                hlRes.StatusDescription = rc.StatusDescription;
-                hlRes.ContentType = rc.ContentType;
-                hlRes.OutputStream.Write(rc.OutputBuffer, 0, rc.OutputBuffer.Length);
-                hlRes.OutputStream.Close();
-                hlRes.OutputStream.Dispose();
+                using (HttpListenerResponse hlRes = hlc.Response)
+                {
+                    hlRes.StatusCode = rc.StatusCode;
+                    hlRes.StatusDescription = rc.StatusDescription;
+                    hlRes.ContentType = rc.ContentType;
+                    hlRes.OutputStream.Write(rc.OutputBuffer, 0, rc.OutputBuffer.Length);
+                    hlRes.OutputStream.Close();
+                }
 
                 if (this.ErrorMode() == false)
                 {
