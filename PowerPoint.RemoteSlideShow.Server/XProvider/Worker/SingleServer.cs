@@ -109,135 +109,179 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
             return result;
         }
 
-        private Model.ResponseContent SelectResponseContent(HttpListenerRequest hlReq)
+        private Model.ResponseContent SelectResponseContent_Login(bool isWrongPassword)
         {
+            // TODO : [MEMO] HTML 디렉토리와 관계있음!
+            string processValue = (Environment.CurrentDirectory + @"\HTML\Login.html");
             Model.ResponseContent result = null;
-            //// 예 : http://127.0.0.1/MyTemp         --->    AbsolutePath : /MyTemp              ---> requestPagePath : empty
-            //// 예 : http://127.0.0.1/MyTemp/xxx.asp --->    AbsolutePath : /MyTemp/xxx.asp      ---> requestPagePath : /xxx.asp
-            string requestPagePath = hlReq.Url.AbsolutePath.Substring((this.URLRootDirectoryName.Length + 1)).ToUpper();
-            bool matchAuthPassword = ((hlReq.QueryString["AuthPassword"] ?? String.Empty).Trim().ToUpper() == this.ConnectPasswordUpper);
-            bool mathWorkID = ((hlReq.QueryString["WorkID"] ?? String.Empty).Trim() == this.WorkID());
-            string assemblyVersion = XProvider.Value.AssemblyValue.Version.ToString();
-            string assemblyName = XProvider.Value.AssemblyValue.Name;
 
-            // 로그인 폼
-            if (requestPagePath == String.Empty)
-            {
-                // TODO : [MEMO] HTML 디렉토리와 관계있음!
-                string processValue = (Environment.CurrentDirectory + @"\HTML\Login.html");
-
-                if ((processValue != String.Empty) && (File.Exists(processValue) == true))
-                {
-                    StringBuilder responseText = new StringBuilder();
-                    responseText.AppendLine(File.ReadAllText(processValue, Encoding.UTF8));
-                    responseText.Replace("@@URLRootDirectoryName@@", this.URLRootDirectoryName);
-                    responseText.Replace("@@DocumentName@@", this.DocumentName());
-                    responseText.Replace("@@WrongPasswordBoxDisplay@@", "none");
-                    responseText.Replace("@@AssemblyName@@", assemblyName);
-                    responseText.Replace("@@AssemblyVersion@@", assemblyVersion);
-
-                    result = new Model.ResponseContent(
-                        Value.NetworkValue.HTTPOK,
-                        Value.MimeTypeValue.HTML,
-                        responseText.ToString()
-                    );
-                }
-            }
-            // 로그인 체크
-            else if (requestPagePath == "/LOGINOK")
+            if (File.Exists(processValue) == true)
             {
                 StringBuilder responseText = new StringBuilder();
+                responseText.AppendLine(File.ReadAllText(processValue, Encoding.UTF8));
+                responseText.Replace("@@URLRootDirectoryName@@", this.URLRootDirectoryName);
+                responseText.Replace("@@DocumentName@@", this.DocumentName());
+                responseText.Replace("@@WrongPasswordBoxDisplay@@", ((isWrongPassword == true) ? "block" : "none"));
+                responseText.Replace("@@AssemblyName@@", XProvider.Value.AssemblyValue.Name);
+                responseText.Replace("@@AssemblyVersion@@", XProvider.Value.AssemblyValue.Version.ToString());
 
-                // 로그인 성공
-                if (matchAuthPassword == true)
-                {
-                    // TODO : [MEMO] HTML 디렉토리와 관계있음!
-                    string processValue = (Environment.CurrentDirectory + @"\HTML\LoginOK.html");
+                result = new Model.ResponseContent(
+                    Value.NetworkValue.HTTPOK,
+                    Value.MimeTypeValue.HTML,
+                    responseText.ToString()
+                );
+            }
 
-                    if ((processValue != String.Empty) && (File.Exists(processValue) == true))
-                    {
-                        responseText.AppendLine(File.ReadAllText(processValue, Encoding.UTF8));
-                        responseText.Replace("@@AuthPassword@@", this.ConnectPassword);
-                        responseText.Replace("@@URLRootDirectoryName@@", this.URLRootDirectoryName);
-                        responseText.Replace("@@DocumentName@@", this.DocumentName());
-                        responseText.Replace("@@WorkID@@", this.WorkID());
-                        responseText.Replace("@@MaxSlideCount@@", this.SlideCount().ToString());
-                        responseText.Replace("@@SlideWidth@@", this.SlideSize().Width.ToString());
-                        responseText.Replace("@@SlideHeight@@", this.SlideSize().Height.ToString());
-                        responseText.Replace("@@AssemblyName@@", assemblyName);
-                        responseText.Replace("@@AssemblyVersion@@", assemblyVersion);
+            return result;
+        }
 
-                        int count1 = 1;
-                        responseText.Replace(
-                            "@@SlideAreaItemList@@",
-                            String.Join(
-                                Environment.NewLine,
-                                (
-                                    (new string[this.SlideCount()])
-                                        .Select(
+        private Model.ResponseContent SelectResponseContent_LoginOK()
+        {
+            // TODO : [MEMO] HTML 디렉토리와 관계있음!
+            string processValue = (Environment.CurrentDirectory + @"\HTML\LoginOK.html");
+            Model.ResponseContent result = null;
+
+            if (File.Exists(processValue) == true)
+            {
+                StringBuilder responseText = new StringBuilder();
+                responseText.AppendLine(File.ReadAllText(processValue, Encoding.UTF8));
+                responseText.Replace("@@AuthPassword@@", this.ConnectPassword);
+                responseText.Replace("@@URLRootDirectoryName@@", this.URLRootDirectoryName);
+                responseText.Replace("@@DocumentName@@", this.DocumentName());
+                responseText.Replace("@@WorkID@@", this.WorkID());
+                responseText.Replace("@@MaxSlideCount@@", this.SlideCount().ToString());
+                responseText.Replace("@@SlideWidth@@", this.SlideSize().Width.ToString());
+                responseText.Replace("@@SlideHeight@@", this.SlideSize().Height.ToString());
+                responseText.Replace("@@AssemblyName@@", XProvider.Value.AssemblyValue.Name);
+                responseText.Replace("@@AssemblyVersion@@", XProvider.Value.AssemblyValue.Version.ToString());
+
+                int count1 = 1;
+                responseText.Replace(
+                    "@@SlideAreaItemList@@",
+                    String.Join(
+                        Environment.NewLine,
+                        (
+                            (new string[this.SlideCount()])
+                                .Select(
+                                    (
+                                        (x) => (
                                             (
-                                                (x) => (
-                                                    (
-                                                        @"
+                                                @"
                         				                <li class=""" + ((count1 <= 1) ? "boxblock" : "boxnone") + @""">
                         					                <img src=""/" + this.URLRootDirectoryName + "/GetSlide?authpassword=" + this.ConnectPassword + "&workid=" + this.WorkID() + "&no=" + count1 + @""" />
                         					                <div>" + this.SlideItem((count1++).ToString()).Memo.Replace("\r", ("<br />" + Environment.NewLine)) + @"</div>
                         				                </li>
                                                     "
-                                                    )
-                                                )
                                             )
                                         )
+                                    )
                                 )
-                            )
-                        );
+                        )
+                    )
+                );
 
-                        int count2 = 1;
-                        responseText.Replace(
-                            "@@SlideListAreaItemList@@",
-                            String.Join(
-                                Environment.NewLine,
-                                (
-                                    (new string[this.SlideCount()])
-                                        .Select(
+                int count2 = 1;
+                responseText.Replace(
+                    "@@SlideListAreaItemList@@",
+                    String.Join(
+                        Environment.NewLine,
+                        (
+                            (new string[this.SlideCount()])
+                                .Select(
+                                    (
+                                        (x) => (
                                             (
-                                                (x) => (
-                                                    (
-                                                        @"<li class=""" + ((count2 <= 1) ? "on" : "off") + @""" onclick=""SlideShowCommand('MOVE," + count2 + @"');""><img src=""/" + this.URLRootDirectoryName + "/GetSlide?authpassword=" + this.ConnectPassword + "&workid=" + this.WorkID() + "&no=" + (count2++) + @""" /></li>"
-                                                    )
-                                                )
+                                                @"<li class=""" + ((count2 <= 1) ? "on" : "off") + @""" onclick=""SlideShowCommand('MOVE," + count2 + @"');""><img src=""/" + this.URLRootDirectoryName + "/GetSlide?authpassword=" + this.ConnectPassword + "&workid=" + this.WorkID() + "&no=" + (count2++) + @""" /></li>"
                                             )
                                         )
+                                    )
                                 )
-                            )
-                        );
-                    }
+                        )
+                    )
+                );
+
+                result = new Model.ResponseContent(
+                    Value.NetworkValue.HTTPOK,
+                    Value.MimeTypeValue.HTML,
+                    responseText.ToString()
+                );
+            }
+
+            return result;
+        }
+
+        private Model.ResponseContent SelectResponseContent_DefaultStyle()
+        {
+            string processValue = (Environment.CurrentDirectory + @"\CSS\DefaultStyle.css");
+            Model.ResponseContent result = null;
+
+            if (File.Exists(processValue) == true)
+            {
+                result = new Model.ResponseContent(
+                    Value.NetworkValue.HTTPOK,
+                    Value.MimeTypeValue.StyleSheet,
+                    File.ReadAllBytes(processValue)
+                );
+            }
+
+            return result;
+        }
+
+        private Model.ResponseContent SelectResponseContent_404NotFound()
+        {
+            return new Model.ResponseContent(
+                Value.NetworkValue.HTTPNotFound,
+                Value.MimeTypeValue.HTML,
+                (
+                    @"
+                        <!DOCTYPE html>
+                        <html lang=""ko"">
+	                        <head>
+		                        <meta charset=""utf-8"">
+		                        <title> 404 - Not Found </title>
+		                        <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0, target-densitydpi=medium-dpi"" />
+	                        </head>
+	                        <body>
+		                        <h1>404 - Not Found</h1>
+		                        <h3>해당 경로에 파일이 없습니다.</h3>
+	                        </body>
+                        </html>
+                    "
+                )
+            );
+        }
+
+        private Model.ResponseContent SelectResponseContent(HttpListenerRequest hlReq)
+        {
+            Model.ResponseContent result = null;
+            //// 예 : http://192.168.0.1/MyTemp         --->    AbsolutePath : /MyTemp              ---> requestPagePath : empty
+            //// 예 : http://192.168.0.1/MyTemp/xxx.asp --->    AbsolutePath : /MyTemp/xxx.asp      ---> requestPagePath : /xxx.asp
+            string requestPagePath = hlReq.Url.AbsolutePath.Substring((this.URLRootDirectoryName.Length + 1)).ToUpper();
+            bool matchAuthPassword = ((hlReq.QueryString["AuthPassword"] ?? String.Empty).Trim().ToUpper() == this.ConnectPasswordUpper);
+            bool mathWorkID = ((hlReq.QueryString["WorkID"] ?? String.Empty).Trim() == this.WorkID());
+
+            // 로그인 폼
+            if (requestPagePath == String.Empty)
+            {
+                result = this.SelectResponseContent_Login(false);
+            }
+            // 로그인 체크
+            else if (requestPagePath == "/LOGINOK")
+            {
+                // 로그인 성공
+                if (matchAuthPassword == true)
+                {
+                    result = this.SelectResponseContent_LoginOK();
                 }
                 // 로그인 실패
                 else
                 {
-                    // TODO : [MEMO] HTML 디렉토리와 관계있음!
-                    string processValue = (Environment.CurrentDirectory + @"\HTML\Login.html");
-
-                    if ((processValue != String.Empty) && (File.Exists(processValue) == true))
-                    {
-                        responseText.AppendLine(File.ReadAllText(processValue, Encoding.UTF8));
-                        responseText.Replace("@@URLRootDirectoryName@@", this.URLRootDirectoryName);
-                        responseText.Replace("@@DocumentName@@", this.DocumentName());
-                        responseText.Replace("@@WrongPasswordBoxDisplay@@", "block");
-                        responseText.Replace("@@AssemblyName@@", assemblyName);
-                        responseText.Replace("@@AssemblyVersion@@", assemblyVersion);
-                    }
+                    result = this.SelectResponseContent_Login(true);
                 }
-
-                if (responseText.Length > 0)
-                {
-                    result = new Model.ResponseContent(
-                        Value.NetworkValue.HTTPOK,
-                        Value.MimeTypeValue.HTML,
-                        responseText.ToString()
-                    );
-                }
+            }
+            else if (requestPagePath == "/CSS/DEFAULTSTYLE.CSS")
+            {
+                result = this.SelectResponseContent_DefaultStyle();
             }
             // 슬라이드 이미지 다운로드
             else if ((requestPagePath == "/GETSLIDE") && ((matchAuthPassword == true) && (mathWorkID == true)))
@@ -252,19 +296,6 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
                     );
                 }
             }
-            else if (requestPagePath == "/CSS/DEFAULTSTYLE.CSS")
-            {
-                string processValue = (Environment.CurrentDirectory + @"\CSS\DefaultStyle.css");
-
-                if ((processValue != String.Empty) && (File.Exists(processValue) == true))
-                {
-                    result = new Model.ResponseContent(
-                        Value.NetworkValue.HTTPOK,
-                        Value.MimeTypeValue.StyleSheet,
-                        File.ReadAllBytes(processValue)
-                    );
-                }
-            }
             // 슬라이드 쑈 컨트롤
             else if ((requestPagePath == "/COMMAND") && ((matchAuthPassword == true) && (mathWorkID == true)))
             {
@@ -276,13 +307,10 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
                     (this.SlideShowCommand(processValue.Split(new string[] { "," }, StringSplitOptions.None)) == true)
                 )
                 {
-                    StringBuilder responseText = new StringBuilder();
-                    responseText.AppendLine((@"{ ""statusCode"" : ""OK"" }"));
-
                     result = new Model.ResponseContent(
                         Value.NetworkValue.HTTPOK,
                         Value.MimeTypeValue.JSON,
-                        responseText.ToString()
+                        "{ \"statusCode\" : \"OK\" }"
                     );
                 }
             }
@@ -290,26 +318,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
             // 아무 결과도 없으면 404 오류!
             if (result == null)
             {
-                result = new Model.ResponseContent(
-                    Value.NetworkValue.HTTPNotFound, 
-                    Value.MimeTypeValue.HTML,
-                    (
-                        @"
-                            <!DOCTYPE html>
-                            <html lang=""ko"">
-	                            <head>
-		                            <meta charset=""utf-8"">
-		                            <title> 404 - Not Found </title>
-		                            <meta name=""viewport"" content=""width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0, target-densitydpi=medium-dpi"" />
-	                            </head>
-	                            <body>
-		                            <h1>404 - Not Found</h1>
-		                            <h3>해당 경로에 파일이 없습니다.</h3>
-	                            </body>
-                            </html>
-                        "
-                    )
-                );
+                result = this.SelectResponseContent_404NotFound();
             }
 
             return result;
@@ -337,7 +346,8 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
             this.DocumentName = documentName;
             this.SlideSize = slideSize;
             this.SlideCount = slideCount;
-            this.SlideShowCommand = slideShowCommand;
+            //this.SlideShowCommand = slideShowCommand;
+            this.SlideShowCommand = delegate(string[] x) { return true; };
             this.ErrorMode = errorMode;
             this.NotifyError = notifyError;
 
