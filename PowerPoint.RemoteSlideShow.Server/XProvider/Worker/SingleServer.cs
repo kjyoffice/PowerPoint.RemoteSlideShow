@@ -346,8 +346,8 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
             this.DocumentName = documentName;
             this.SlideSize = slideSize;
             this.SlideCount = slideCount;
-            //this.SlideShowCommand = slideShowCommand;
-            this.SlideShowCommand = delegate(string[] x) { return true; };
+            this.SlideShowCommand = slideShowCommand;
+            //this.SlideShowCommand = delegate(string[] x) { return true; };
             this.ErrorMode = errorMode;
             this.NotifyError = notifyError;
 
