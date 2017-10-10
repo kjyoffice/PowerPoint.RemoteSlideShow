@@ -149,6 +149,7 @@ This program is for study and reference posting.
 Add manifest file for require administrator level.
 
 [비주얼 스튜디오에서 관리자 권한을 요구하는 C# 콘솔 프로그램 제작][sysnet3]
+
 [http://www.sysnet.pe.kr/2/0/11318][sysnet3]
 
 [sysnet3]: http://www.sysnet.pe.kr/2/0/11318
