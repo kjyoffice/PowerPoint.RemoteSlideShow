@@ -118,6 +118,19 @@ This program is for study and reference posting.
 
 * * *
 
+## 알려진 문제점 (Known problem)
+
+1. UI 구림<br />
+    UI is shit
+
+2. 만든애가 영어가 너무 짧아서 텍스트가 엉망진창임<br />
+    KimJaeYoung is very very little bit english. terrible text
+
+3. 공개된 연결 비밀번호. 낮은 보안성<br />
+    Opend connect password. low security
+
+* * *
+
 ## 수정내역 (Fix log)
 
 ##### 2017-10-10
@@ -128,4 +141,15 @@ Add manifest file for require administrator level.
 [http://www.sysnet.pe.kr/2/0/11318][sysnet3]
 
 [sysnet3]: http://www.sysnet.pe.kr/2/0/11318
+
+##### 2018-04-20
+"이 프로그램은" 버튼 삭제<br />
+Deleted button to "이 프로그램은"
+
+연결 가능한 URL 모두가 표시되도록 함<br />
+All display connect ready URL<br />
++<br />
+UI 일부 수정<br />
+UI Modify
+
 
