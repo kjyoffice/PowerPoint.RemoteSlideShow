@@ -31,7 +31,7 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
                 return (Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyTitleAttribute), false)[0] as AssemblyTitleAttribute).Title;
             }
         }
-
+        /*
         public static string AboutView
         {
             get
@@ -50,5 +50,6 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
                 );
             }
         }
+        */
     }
 }
