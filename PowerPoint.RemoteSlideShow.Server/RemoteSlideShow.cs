@@ -44,7 +44,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                         {
                             this.Activate();
                             this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.Error;
-                            this.UIWorkStatus.Text = "오류발생!";
+                            this.UIWorkStatusMessage.Text = "오류발생!";
 
                             if (slideShowCommandTime == false)
                             {
@@ -69,7 +69,7 @@ namespace PowerPoint.RemoteSlideShow.Server
             {
                 this.Activate();
                 this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.Error;
-                this.UIWorkStatus.Text = "오류발생!";
+                this.UIWorkStatusMessage.Text = "오류발생!";
 
                 if (slideShowCommandTime == false)
                 {
@@ -141,7 +141,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                     if (this.PPTSlides != null)
                     {
                         this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.PreSetting;
-                        this.UIWorkStatus.Text = "슬라이드 셋팅 진행";
+                        this.UIWorkStatusMessage.Text = "슬라이드 셋팅 진행";
                         this.ExecutePreSetting();
                     }
                     else
@@ -192,7 +192,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                 }
 
                 this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.ExportSlide;
-                this.UIWorkStatus.Text = "슬라이드 정보 내보내기";
+                this.UIWorkStatusMessage.Text = "슬라이드 정보 내보내기";
 
                 // 각 슬라이드 스크린샷 내보내기
                 for (int i = 1; i <= this.PPTSlides.Count; i++)
@@ -221,11 +221,11 @@ namespace PowerPoint.RemoteSlideShow.Server
 
                 this.WebServer.StartServer(this.WorkID.Substring(0, 8));
                 
-                this.UIConnectURL.Text = ("주소 : " + this.WebServer.ConnectURL);
+                this.UIConnectURL.Text = String.Join(Environment.NewLine, this.WebServer.ConnectURL);
                 this.UIConnectPassword.Text = ("비밀번호 : " + this.WebServer.ConnectPassword);
 
                 this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.Ready;
-                this.UIWorkStatus.Text = "원격 슬라이드가 준비됨";
+                this.UIWorkStatusMessage.Text = "원격 슬라이드가 준비됨";
             }
             else
             {
@@ -279,7 +279,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                                         try
                                         {
                                             this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.Start;
-                                            this.UIWorkStatus.Text = "원격 슬라이드 시작";
+                                            this.UIWorkStatusMessage.Text = "원격 슬라이드 시작";
                                             this.WindowState = FormWindowState.Minimized;
                                             this.PPTPresentation.SlideShowSettings.Run();
                                         }
@@ -295,7 +295,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                         else
                         {
                             this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.Start;
-                            this.UIWorkStatus.Text = "원격 슬라이드 시작";
+                            this.UIWorkStatusMessage.Text = "원격 슬라이드 시작";
                             this.WindowState = FormWindowState.Minimized;
                             this.PPTPresentation.SlideShowSettings.Run();
                         }
@@ -331,7 +331,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                                         try
                                         {
                                             this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.End;
-                                            this.UIWorkStatus.Text = "원격 슬라이드 종료";
+                                            this.UIWorkStatusMessage.Text = "원격 슬라이드 종료";
                                             this.UIConnectURL.Text = "-";
                                             this.UIConnectPassword.Text = "-";
                                             this.WindowState = FormWindowState.Normal;
@@ -349,7 +349,7 @@ namespace PowerPoint.RemoteSlideShow.Server
                         else
                         {
                             this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.End;
-                            this.UIWorkStatus.Text = "원격 슬라이드 종료";
+                            this.UIWorkStatusMessage.Text = "원격 슬라이드 종료";
                             this.UIConnectURL.Text = "-";
                             this.UIConnectPassword.Text = "-";
                             this.WindowState = FormWindowState.Normal;
@@ -453,8 +453,8 @@ namespace PowerPoint.RemoteSlideShow.Server
 
             this.InitializeComponent();
             this.Icon = XResource.FormDesign.MainFrame;
-            this.UIDocumentName.Text = documentName;
-            this.UIWorkStatus.Text = "초기화";
+            this.Text += (" - " + documentName);
+            this.UIWorkStatusMessage.Text = "초기화";
         }
 
         private void RemoteSlideShow_Load(object sender, EventArgs e)
@@ -462,7 +462,7 @@ namespace PowerPoint.RemoteSlideShow.Server
             try
             {
                 this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.CreateWorkID;
-                this.UIWorkStatus.Text = "Work ID 생성";
+                this.UIWorkStatusMessage.Text = "Work ID 생성";
                 this.WorkID = this.CreateWorkID(XProvider.AppConfig.AppSettings.SlideExportDirectoryPath);
 
                 if (this.WorkID != String.Empty)
@@ -485,7 +485,7 @@ namespace PowerPoint.RemoteSlideShow.Server
             try
             {
                 this.SlideShowMode = XProvider.TypeValue.SlideShowdModeType.CheckSlide;
-                this.UIWorkStatus.Text = "슬라이드 확인";
+                this.UIWorkStatusMessage.Text = "슬라이드 확인";
                 this.SelectPowerPointDocument();
             }
             catch (Exception eEx)

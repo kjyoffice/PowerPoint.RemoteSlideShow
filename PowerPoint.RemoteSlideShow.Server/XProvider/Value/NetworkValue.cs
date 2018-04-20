@@ -10,13 +10,11 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Value
 {
     public class NetworkValue
     {
-        public static string LANIPAddress
+        public static IPAddress[] LANIPAddress
         {
             get
             {
-                IPAddress[] ipa = Dns.GetHostAddresses(Dns.GetHostName()).Where(((x) => (x.AddressFamily == AddressFamily.InterNetwork))).ToArray();
-
-                return ((ipa.Length > 0) ? ipa[0].ToString() : String.Empty);
+                return Dns.GetHostAddresses(Dns.GetHostName()).Where(((x) => (x.AddressFamily == AddressFamily.InterNetwork))).ToArray();
             }
         }
 

@@ -49,18 +49,14 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
 
         // ------------------------------------------
 
-        public string ConnectURL
+        public string[] ConnectURL
         {
             get
             {
-                return (
-                    "http://" + 
-                    (
-                        Value.NetworkValue.LANIPAddress + 
-                        ((this.HttpPortNo != 80) ? (":" + this.HttpPortNo) : String.Empty)
-                    ) + 
-                    "/" + this.URLRootDirectoryName + "/"
-                );
+                string baseURL = ("http://{0}" + ((this.HttpPortNo != 80) ? (":" + this.HttpPortNo) : String.Empty) + "/" + this.URLRootDirectoryName + "/");
+                string[] result = Value.NetworkValue.LANIPAddress.Select(x => String.Format(baseURL, x.ToString())).ToArray();
+
+                return result;
             }
         }
 
@@ -346,8 +342,8 @@ namespace PowerPoint.RemoteSlideShow.Server.XProvider.Worker
             this.DocumentName = documentName;
             this.SlideSize = slideSize;
             this.SlideCount = slideCount;
-            this.SlideShowCommand = slideShowCommand;
-            //this.SlideShowCommand = delegate(string[] x) { return true; };
+            //this.SlideShowCommand = slideShowCommand;
+            this.SlideShowCommand = delegate(string[] x) { return true; };
             this.ErrorMode = errorMode;
             this.NotifyError = notifyError;
 
